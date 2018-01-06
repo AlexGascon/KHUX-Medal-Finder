@@ -5,6 +5,8 @@ BASE_ENDPOINT = "http://www.khuxbot.com/api/v1/medal?q=data&"
 
 def compose_endpoint(filters):
     """Given a dictionary with the filters to use in the search, composes the endpoint URL"""
+
+    # We'll only search for Level 6 medals, as those are the ones used in setups
     base_filter = 'filter={"rarity": 6'
 
     for filter_name in filters:
