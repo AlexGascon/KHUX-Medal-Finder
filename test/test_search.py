@@ -17,7 +17,8 @@ class TestSearch(unittest.TestCase):
     def test_get_medals(self, mock_requests):
         # Mocking HTTP requests to avoid making real requests
         api_url = 'http://www.khuxbot.com/api/v1/medal?q=data&filter=%7B%22rarity%22:%206,%22direction%22:%22Upright%22,%22element%22:%22Power%22,%22cost%22:%224%22,%22tier%22:%226%22%7D'
-        api_response = json.loads(open('test/fixtures/medals_upright_power_c4_t6.json').read())
+        with open('test/fixtures/medals_upright_power_c4_t6.json') as fixture:
+            api_response = json.loads(fixture.read())
         mock_requests.get(api_url, json=api_response)
 
         filters = {"direction": "Upright", "element": "Power", "cost": 4, "tier": 6}
