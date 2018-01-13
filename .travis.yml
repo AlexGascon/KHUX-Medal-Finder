@@ -5,5 +5,5 @@ install:
   - pip install pipenv
   - pipenv install --dev
 script:
-  - coverage run --source=. -m unittest discover -s test¨/
+  - coverage run --source=. -m unittest -v
   - codecov
