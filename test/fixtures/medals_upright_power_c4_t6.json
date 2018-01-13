@@ -17,7 +17,8 @@
       "strength": 5753,
       "targets": "All",
       "tier": 6,
-      "type": "Combat"
+      "type": "Combat",
+      "voice_link": null
     },
     "1": {
       "cost": 4,
@@ -36,7 +37,8 @@
       "strength": 5756,
       "targets": "All",
       "tier": 6,
-      "type": "Combat"
+      "type": "Combat",
+      "voice_link": null
     }
   }
 }
