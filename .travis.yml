@@ -5,5 +5,4 @@ install:
   - pip install pipenv
   - pipenv install --dev
 script:
-  - coverage run test/test_search.py -v
   - codecov
