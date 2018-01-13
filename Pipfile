@@ -10,6 +10,7 @@ name = "pypi"
 ipdb = "*"
 requests-mock = "*"
 codecov = "*"
+coverage = "*"
 
 
 [packages]
