@@ -9,6 +9,7 @@ name = "pypi"
 
 ipdb = "*"
 requests-mock = "*"
+codecov = "*"
 
 
 [packages]
