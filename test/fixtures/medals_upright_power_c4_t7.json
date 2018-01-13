@@ -1,0 +1,24 @@
+{
+  "medal": {
+    "0": {
+      "cost": 4,
+      "defence": 5693,
+      "direction": "Upright",
+      "element": "Power",
+      "hits": 8,
+      "id": 1043,
+      "image_link": "/static/medal_images//HD_KHII_Leon_6.png",
+      "multiplier": "x2.51-4.20",
+      "name": "HD KHII Leon",
+      "notes": "Increases your upright attack by one step and decreases enem general defense by three steps for one turn; deals more damage when set in the sixth slot of your deck (pet slot)",
+      "pullable": "Yes",
+      "rarity": 6,
+      "region": "na",
+      "strength": 5741,
+      "targets": "All",
+      "tier": 7,
+      "type": "Combat",
+      "voice_link": null
+    }
+  }
+}

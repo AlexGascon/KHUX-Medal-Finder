@@ -26,3 +26,14 @@ def get_medals(filters):
 
     # Returning the medals as a list instead of a dict, as it's easier to work with it
     return [medals[key_id] for key_id in medals]
+
+
+def combine_searches(filters_list):
+    """Given a list containing sets of filters, executes the necessary searches
+    and combines the results"""
+    medals = []
+
+    for filters in filters_list:
+        medals += get_medals(filters)
+
+    return medals
