@@ -1,6 +1,8 @@
 # KHUX-Medal-Finder
 
-![](https://travis-ci.org/AlexGascon/KHUX-Medal-Finder.svg?branch=master)
+![](https://travis-ci.org/AlexGascon/KHUX-Medal-Finder.svg?branch=master)  [![codecov](https://codecov.io/gh/AlexGascon/KHUX-Medal-Finder/branch/master/graph/badge.svg)](https://codecov.io/gh/AlexGascon/KHUX-Medal-Finder)
+
+
 
 ---
 <div style="text-align:center"><img src="https://cache.sqex-bridge.jp/img/oPD8NjYdT"/></div>
