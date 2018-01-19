@@ -33,7 +33,7 @@ class TestScrapper(unittest.TestCase):
         with self.requests_mock:
             self.assertListEqual(self.scrapper.get_medal_names(), expected_names)
 
-    @patch.object(DBWrapper, 'find_all')
+    @patch.object(DBWrapper, 'find_all', create=True)
     def test_missing_medals(self, mock_find_all):
         all_medals_file = 'test/fixtures/scrapper/medal_names.txt'
         with open(all_medals_file) as content:
