@@ -1,8 +1,11 @@
 import unittest
 import json
 import requests_mock
+from unittest.mock import patch
 
 from src.scrapper import Scrapper
+from src.db import DBWrapper
+
 
 class TestScrapper(unittest.TestCase):
 
@@ -29,4 +32,18 @@ class TestScrapper(unittest.TestCase):
 
         with self.requests_mock:
             self.assertListEqual(self.scrapper.get_medal_names(), expected_names)
+
+    @patch.object(DBWrapper, 'find_all')
+    def test_missing_medals(self, mock_find_all):
+        all_medals_file = 'test/fixtures/scrapper/medal_names.txt'
+        with open(all_medals_file) as content:
+            medals = [name.strip() for name in content.readlines()]
+            mock_find_all.return_value = medals[:-3]
+
+        expected_missing_medals = ['webby vanderquack', 'scrooge mcduck', 'illustrated halloween goofy']
+        with self.requests_mock:
+            missing_medals = self.scrapper.missing_medals()
+
+        self.assertCountEqual(expected_missing_medals, missing_medals)
+        mock_find_all.assert_called_once_with('Medals', ['name'])
 
