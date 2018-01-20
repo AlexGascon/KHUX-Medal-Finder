@@ -1,0 +1,44 @@
+{
+  "medal": {
+    "0": {
+      "cost": 1,
+      "defence": 4274,
+      "direction": "Reversed",
+      "element": "Power",
+      "hits": 6,
+      "id": 986,
+      "image_link": "/static/medal_images//Axel_B_5.png",
+      "multiplier": "x1.72-3.20",
+      "name": "Axel B",
+      "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck",
+      "pullable": "No",
+      "rarity": 5,
+      "region": "na",
+      "strength": 4377,
+      "targets": "Random",
+      "tier": 3,
+      "type": "Combat",
+      "voice_link": null
+    },
+    "1": {
+      "cost": 1,
+      "defence": 5512,
+      "direction": "Reversed",
+      "element": "Power",
+      "hits": 6,
+      "id": 987,
+      "image_link": "/static/medal_images//Axel_B_6.png",
+      "multiplier": "x1.78-3.26",
+      "name": "Axel B",
+      "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck",
+      "pullable": "No",
+      "rarity": 6,
+      "region": "na",
+      "strength": 5645,
+      "targets": "Random",
+      "tier": 3,
+      "type": "Combat",
+      "voice_link": null
+    }
+  }
+}
