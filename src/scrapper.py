@@ -45,11 +45,20 @@ class Scrapper:
 
     def scrape_missing_medals(self):
         """Saves in the DB the medals that aren't there yet"""
-        missing_medals = self.missing_medals()
+        success = True
 
-        for medal_name in missing_medals:
-            matching_medals = self.get_medals(medal_name)
+        try:
+            missing_medals = self.missing_medals()
 
-            for medal in matching_medals:
-                if not DBWrapper.is_present('Medals', {"id": medal['id']}):
-                    DBWrapper.save('Medals', medal)
+            for medal_name in missing_medals:
+                matching_medals = self.get_medals(medal_name)
+
+                for medal in matching_medals:
+                    if not DBWrapper.is_present('Medals', {"id": medal['id']}):
+                        success = (DBWrapper.save('Medals', medal) and success)
+
+        except Exception:
+            success = False
+
+        finally:
+            return success
