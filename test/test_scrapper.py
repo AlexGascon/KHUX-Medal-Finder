@@ -178,7 +178,8 @@ class TestScrapper(unittest.TestCase):
     def test_scrape_missing_medals_when_problem_in_DB(self, mock_missing_medals, mock_db_is_present, mock_db_save):
         mock_missing_medals.return_value = ['hd invi [ex]']
         mock_db_is_present.return_value = False
-        mock_db_save.return_value = False
+        mock_db_save.return_value = True
+        mock_db_save.side_effect = Exception('The DB couldnt save the medal')
         invi_medal = {"cost": 1, "defence": 5861, "direction": "Upright", "element": "Magic", "hits": 4, "id": 1014, "image_link": "/static/medal_images//HD_Invi_EX_6.png", "multiplier": "x3.12-4.32", "name": "HD Invi [EX]", "notes": "Increases your magic attack by seven steps, decreases enemy general defense by two steps and enemy magic defense by seven steps for two turns; deals more damage when only one enemy in the group remains or all raid parts have been destroyed; doesn't affect enemy counters", "pullable": "No", "rarity": 6, "region": "na", "strength": 6030, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}
 
         with self.requests_mock:
