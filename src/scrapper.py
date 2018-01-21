@@ -20,7 +20,6 @@ class Scrapper:
         # as '%20' instead of as the by-default '+'
         params = {"q": "data", "medal": medal_name}
         encoded_params = urlencode(params).replace('+', '%20')
-
         session = requests.Session()
         request = requests.Request(method='GET', url=self.medal_base_endpoint)
         prepared = request.prepare()
@@ -32,7 +31,7 @@ class Scrapper:
 
         medals_dict = response.json()['medal']
         medals = []
-        for index, medal in medals_dict.items():
+        for _, medal in medals_dict.items():
             medals.append(medal)
 
         return medals
@@ -43,3 +42,14 @@ class Scrapper:
         total_medals = set(self.get_medal_names())
 
         return list(total_medals - current_medals)
+
+    def scrape_missing_medals(self):
+        """Saves in the DB the medals that aren't there yet"""
+        missing_medals = self.missing_medals()
+
+        for medal_name in missing_medals:
+            matching_medals = self.get_medals(medal_name)
+
+            for medal in matching_medals:
+                if not DBWrapper.is_present('Medals', {"id": medal['id']}):
+                    DBWrapper.save('Medals', medal)

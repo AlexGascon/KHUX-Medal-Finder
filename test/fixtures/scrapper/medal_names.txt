@@ -393,7 +393,6 @@ toon xion
 toon sora
 twilight thorn
 illustrated auron
-axel b
 hd larxene
 illustrated marluxia [ex]
 key art #12
@@ -407,7 +406,6 @@ valor genie
 hd vanitas
 illustrated kh kairi [ex]
 hd ira [ex]
-hd invi [ex]
 roxas b
 xion b
 hd zexion
@@ -432,3 +430,5 @@ launchpad mcquack
 webby vanderquack
 scrooge mcduck
 illustrated halloween goofy
+hd invi [ex]
+axel b
