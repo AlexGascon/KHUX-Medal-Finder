@@ -1,0 +1,24 @@
+{
+  "medal": {
+    "0": {
+      "cost": 2,
+      "defence": 5618,
+      "direction": "Upright",
+      "element": "Speed",
+      "hits": 13,
+      "id": 862,
+      "image_link": "/static/medal_images//KH_02_Terra_and_Ventus_6.png",
+      "multiplier": "x3.40",
+      "name": "KH0.2 Terra & Ventus",
+      "notes": "Raises your power and speed attack by two steps for two turns; deals large damage",
+      "pullable": "No",
+      "rarity": 6,
+      "region": "na",
+      "strength": 5696,
+      "targets": "Single",
+      "tier": 5,
+      "type": "Combat",
+      "voice_link": null
+    }
+  }
+}
