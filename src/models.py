@@ -7,3 +7,6 @@ class BaseModel(Model):
     """Abstract model that we'll use to make other models inherit DB settings"""
     class Meta:
         database = db
+
+class Medal(BaseModel):
+    pass
