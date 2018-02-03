@@ -29,3 +29,10 @@ class Medal(BaseModel):
     tier = IntegerField()
     type = CharField(max_length=10)
     voice_link = TextField()
+
+
+class MedalFactory():
+
+    @classmethod
+    def medal(cls, medal_json):
+        created_medal = Medal

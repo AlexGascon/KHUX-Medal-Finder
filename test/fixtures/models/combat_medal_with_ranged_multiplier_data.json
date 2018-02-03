@@ -1,0 +1,20 @@
+{
+  "cost": 4,
+  "defence": 5671,
+  "direction": "Reversed",
+  "element": "Speed",
+  "hits": 1,
+  "id": 944,
+  "image_link": "/static/medal_images/Final_Boss_Xion_6.png",
+  "multiplier": "x2.61-3.85",
+  "name": "Final Boss Xion",
+  "notes": "Decreases enemy defense by two steps for two turns; deals more damage the more ability gauges you have remaining",
+  "pullable": "Yes",
+  "rarity": 6,
+  "region": "na",
+  "strength": 5747,
+  "targets": "All",
+  "tier": 6,
+  "type": "Combat",
+  "voice_link": "/static/audio/JP/Final_Boss_Xion.mp3"
+}
