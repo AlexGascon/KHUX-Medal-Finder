@@ -57,11 +57,7 @@ class TestFactories(unittest.TestCase):
         with open('test/fixtures/models/non_combat_medal_data.json') as fixture:
             self.non_combat_medal_json = json.loads(fixture.read())
 
-        with open('test/fixtures/models/combat_medal_data_with_ranged_multiplier.json') as fixture:
-            self.combat_medal_ranged_multiplier_json = json.loads(fixture.read())
-
         self.combat_medal = MedalFactory.medal(self.combat_medal_json)
-        self.ranged_multiplier_medal = MedalFactory.medal(self.combat_medal_ranged_multiplier_json)
 
     def test_creates_medal_if_all_fields_are_present(self):
         self.assertIsInstance(self.combat_medal, Medal)
@@ -189,7 +185,3 @@ class TestFactories(unittest.TestCase):
 
         created_medal = MedalFactory.medal(combat_medal_json_faulty)
         self.assertIsInstance(created_medal, Medal)
-
-
-
-
