@@ -2,6 +2,8 @@ import unittest
 import json
 import peewee
 
+from unittest.mock import patch
+
 from src.models import *
 
 
@@ -20,8 +22,8 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(Medal._meta.database, PostgresqlDatabase)
 
     def test_medal_model_has_correct_fields(self):
-        expected_fields = ['cost', 'defence', 'direction', 'hits', 'id',
-                           'image_link', 'multiplier_min', 'multiplier_max',
+        expected_fields = ['cost', 'defence', 'direction', 'element', 'hits',
+                           'id', 'image_link', 'multiplier_min', 'multiplier_max',
                            'name', 'notes', 'pullable', 'rarity', 'region',
                            'strength', 'targets', 'tier', 'type', 'voice_link']
         self.assertCountEqual(Medal._meta.sorted_field_names, expected_fields)
@@ -31,6 +33,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(fields['cost'], peewee.IntegerField)
         self.assertIsInstance(fields['defence'], peewee.IntegerField)
         self.assertIsInstance(fields['direction'], peewee.CharField)
+        self.assertIsInstance(fields['element'], peewee.CharField)
         self.assertIsInstance(fields['hits'], peewee.IntegerField)
         self.assertIsInstance(fields['id'], peewee.IntegerField)
         self.assertIsInstance(fields['image_link'], peewee.TextField)
@@ -47,8 +50,13 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(fields['type'], peewee.CharField)
         self.assertIsInstance(fields['voice_link'], peewee.TextField)
 
+class TestMedalFactory(unittest.TestCase):
 
-class TestFactories(unittest.TestCase):
+    # We override the run method of the Test class to have a simpler way of mocking
+    # all the tests
+    def run(self, result=None):
+        with patch.object(Medal, 'save', return_value=1):
+            super(TestMedalFactory, self).run(result)
 
     def setUp(self):
         with open('test/fixtures/models/combat_medal_data.json') as fixture:
@@ -70,6 +78,7 @@ class TestFactories(unittest.TestCase):
         self.assertEqual(self.combat_medal.cost, 2)
         self.assertEqual(self.combat_medal.defence, 5618)
         self.assertEqual(self.combat_medal.direction, "Upright")
+        self.assertEqual(self.combat_medal.element, "Speed")
         self.assertEqual(self.combat_medal.hits, 13)
         self.assertEqual(self.combat_medal.image_link, "/static/medal_images//KH_02_Terra_and_Ventus_6.png")
         self.assertEqual(self.combat_medal.multiplier_min, 3.40)
@@ -134,13 +143,6 @@ class TestFactories(unittest.TestCase):
     def test_doesnt_create_medal_if_name_is_missing(self):
         combat_medal_json_faulty = self.combat_medal_json.copy()
         combat_medal_json_faulty.pop('name')
-
-        created_medal = MedalFactory.medal(combat_medal_json_faulty)
-        self.assertIsNone(created_medal)
-
-    def test_doesnt_create_medal_if_notes_is_missing(self):
-        combat_medal_json_faulty = self.combat_medal_json.copy()
-        combat_medal_json_faulty.pop('notes')
 
         created_medal = MedalFactory.medal(combat_medal_json_faulty)
         self.assertIsNone(created_medal)
