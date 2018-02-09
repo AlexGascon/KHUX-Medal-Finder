@@ -1,3 +1,6 @@
+# ENV file
+*.env
+
 # Pycharm config files
 .idea/*
 
