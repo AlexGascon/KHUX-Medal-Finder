@@ -6,21 +6,43 @@ from unittest.mock import patch
 
 from src.models import *
 
+test_db = SqliteDatabase(':memory:')
+MODELS = [BaseModel, Medal]
 
-class TestModels(unittest.TestCase):
+class BaseDBTestCase(unittest.TestCase):
+    """TestCase class to use in the test cases where we need to query a DB.
+    It uses a temporary DB to avoid messing with our production one"""
+
+    def setUp(self):
+
+        # Bind model classes to test db
+        for model in MODELS:
+            model.bind(test_db, bind_refs=False, bind_backrefs=False)
+
+        test_db.connect()
+        test_db.create_tables(MODELS)
+
+        super(BaseDBTestCase, self).setUp()
+
+    def tearDown(self):
+        # Not strictly necessary since in-memory databases only live
+        # for the duration of the connection, and in the next step we close
+        # the connection...but a good practice all the same.
+        test_db.drop_tables(MODELS)
+
+        # Close connection to db.
+        test_db.close()
+
+        super(BaseDBTestCase, self).tearDown()
+
+class TestModels(BaseDBTestCase):
     """Tests for the different ORM models"""
 
     """BaseModel model"""
     def test_base_model_has_database(self):
         self.assertIsNotNone(BaseModel._meta.database)
 
-    def test_base_model_has_correct_database(self):
-        self.assertIsInstance(BaseModel._meta.database, PostgresqlDatabase)
-
     """Medal model"""
-    def test_medal_model_has_correct_database(self):
-        self.assertIsInstance(Medal._meta.database, PostgresqlDatabase)
-
     def test_medal_model_has_correct_fields(self):
         expected_fields = ['cost', 'defence', 'direction', 'element', 'hits',
                            'id', 'image_link', 'multiplier_min', 'multiplier_max',
@@ -50,7 +72,7 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(fields['type'], peewee.CharField)
         self.assertIsInstance(fields['voice_link'], peewee.TextField)
 
-class TestMedalFactory(unittest.TestCase):
+class TestMedalFactory(BaseDBTestCase):
 
     # We override the run method of the Test class to have a simpler way of mocking
     # all the tests
@@ -59,6 +81,8 @@ class TestMedalFactory(unittest.TestCase):
             super(TestMedalFactory, self).run(result)
 
     def setUp(self):
+        super(TestMedalFactory, self).setUp()
+
         with open('test/fixtures/models/combat_medal_data.json') as fixture:
             self.combat_medal_json = json.loads(fixture.read())
 
