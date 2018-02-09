@@ -1,12 +1,11 @@
 import unittest
 import json
 import peewee
-import os
 from unittest.mock import patch
 
-from src.models import *
+from src.models import BaseModel, Medal, MedalFactory
 
-test_db = SqliteDatabase(':memory:')
+test_db = peewee.SqliteDatabase(':memory:')
 MODELS = [BaseModel, Medal]
 
 class BaseDBTestCase(unittest.TestCase):
@@ -23,19 +22,6 @@ class BaseDBTestCase(unittest.TestCase):
         test_db.create_tables(MODELS)
 
         super(BaseDBTestCase, self).setUp()
-
-    # We override the run method of the Test class to have a simpler way of mocking
-    # all the tests
-    def run(self, result=None):
-        mocked_db_credentials = {
-            'DB_DATABASE': 'db',
-            'DB_USERNAME': 'user',
-            'DB_PASSWORD': 'pass',
-            'DB_HOST': 'host',
-            'DB_PORT': 'port'
-        }
-        with patch.dict(os.environ, mocked_db_credentials):
-            super(BaseDBTestCase, self).run(result)
 
     def tearDown(self):
         # Not strictly necessary since in-memory databases only live
