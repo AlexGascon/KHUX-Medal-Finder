@@ -2,7 +2,7 @@ import requests
 from urllib.parse import urlencode
 
 from src.db import DBWrapper
-from src.models import Medal
+from src.models import Medal, MedalFactory
 
 
 class Scrapper:
@@ -33,7 +33,7 @@ class Scrapper:
         medals_dict = response.json()['medal']
         medals = []
         for _, medal in medals_dict.items():
-            medals.append(medal)
+            medals.append(MedalFactory.medal(medal))
 
         return medals
 
@@ -55,11 +55,11 @@ class Scrapper:
                 matching_medals = self.get_medals(medal_name)
 
                 for medal in matching_medals:
-                    if not DBWrapper.is_present('Medals', {"id": medal['id']}):
+                    if not Medal.get_or_none(Medal.id == medal.id):
                         success = (DBWrapper.save('Medals', medal) and success)
 
-        except Exception:
+        except Exception as e:
             success = False
 
         finally:
-            return success
+           return success
