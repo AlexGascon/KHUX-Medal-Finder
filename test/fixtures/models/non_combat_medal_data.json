@@ -1,0 +1,20 @@
+{
+  "cost": null,
+  "defence": null,
+  "direction": null,
+  "element": null,
+  "hits": null,
+  "id": 214,
+  "image_link": "/static/medal_images/Moogle_6.png",
+  "multiplier": null,
+  "name": "Moogle",
+  "notes": "Worth 32,000 munny",
+  "pullable": "No",
+  "rarity": 6,
+  "region": "na",
+  "strength": null,
+  "targets": null,
+  "tier": null,
+  "type": "Munny",
+  "voice_link": null
+}

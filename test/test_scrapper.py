@@ -4,10 +4,16 @@ import requests_mock
 from unittest.mock import patch
 
 from src.scrapper import Scrapper
-from src.db import DBWrapper
+from src.models import Medal, MedalFactory
 
 
 class TestScrapper(unittest.TestCase):
+
+    # We override the run method of the Test class to have a simpler way of mocking
+    # all the tests
+    def run(self, result=None):
+        with patch.object(Medal, 'save', return_value=1):
+            super(TestScrapper, self).run(result)
 
     def setUp(self):
         self.scrapper = Scrapper()
@@ -57,7 +63,7 @@ class TestScrapper(unittest.TestCase):
             self.requests_mock.get(medal_with_symbol_in_name_endpoint_3, json=medal_with_symbol_in_name_response_3)
 
     def test_get_medals_when_one_medal_exists(self):
-        expected_medals = [{"cost": 7, "defence": 5645, "direction": "Upright", "element": "Power", "hits": 3,  "id": 1051, "image_link": "/static/medal_images//Illustrated_Halloween_Goofy_6.png", "multiplier": "x4.13", "name": "Illustrated Halloween Goofy", "notes": "Restores 3 guates", "pullable": "No", "rarity": 6, "region": "na", "strength": 5759, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}]
+        expected_medals = [MedalFactory.medal({"cost": 7, "defence": 5645, "direction": "Upright", "element": "Power", "hits": 3,  "id": 1051, "image_link": "/static/medal_images//Illustrated_Halloween_Goofy_6.png", "multiplier": "x4.13", "name": "Illustrated Halloween Goofy", "notes": "Restores 3 guates", "pullable": "No", "rarity": 6, "region": "na", "strength": 5759, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None})]
 
         with self.requests_mock:
             medals = self.scrapper.get_medals('illustrated halloween goofy')
@@ -66,8 +72,8 @@ class TestScrapper(unittest.TestCase):
 
     def test_get_medals_when_several_medals_exist(self):
         expected_medals = [
-            {"cost": 1, "defence": 4274, "direction": "Reversed", "element": "Power", "hits": 6, "id": 986, "image_link": "/static/medal_images//Axel_B_5.png", "multiplier": "x1.72-3.20", "name": "Axel B", "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck", "pullable": "No", "rarity": 5, "region": "na", "strength": 4377, "targets": "Random", "tier": 3, "type": "Combat", "voice_link": None},
-            {"cost": 1, "defence": 5512, "direction": "Reversed", "element": "Power", "hits": 6, "id": 987, "image_link": "/static/medal_images//Axel_B_6.png", "multiplier": "x1.78-3.26", "name": "Axel B", "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck", "pullable": "No", "rarity": 6, "region": "na", "strength": 5645, "targets": "Random", "tier": 3, "type": "Combat", "voice_link": None}
+            MedalFactory.medal({"cost": 1, "defence": 4274, "direction": "Reversed", "element": "Power", "hits": 6, "id": 986, "image_link": "/static/medal_images//Axel_B_5.png", "multiplier": "x1.72-3.20", "name": "Axel B", "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck", "pullable": "No", "rarity": 5, "region": "na", "strength": 4377, "targets": "Random", "tier": 3, "type": "Combat", "voice_link": None}),
+            MedalFactory.medal({"cost": 1, "defence": 5512, "direction": "Reversed", "element": "Power", "hits": 6, "id": 987, "image_link": "/static/medal_images//Axel_B_6.png", "multiplier": "x1.78-3.26", "name": "Axel B", "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck", "pullable": "No", "rarity": 6, "region": "na", "strength": 5645, "targets": "Random", "tier": 3, "type": "Combat", "voice_link": None})
         ]
 
         with self.requests_mock:
@@ -82,9 +88,9 @@ class TestScrapper(unittest.TestCase):
         self.assertCountEqual(medals, [])
 
     def test_get_medals_when_there_are_symbols_in_query(self):
-        expected_medals_1 = [{"cost": 2, "defence": 5618, "direction": "Upright", "element": "Speed", "hits": 13, "id": 862, "image_link": "/static/medal_images//KH_02_Terra_and_Ventus_6.png", "multiplier": "x3.40", "name": "KH0.2 Terra & Ventus", "notes": "Raises your power and speed attack by two steps for two turns; deals large damage", "pullable": "No", "rarity": 6, "region": "na", "strength": 5696, "targets": "Single", "tier": 5, "type": "Combat", "voice_link": None}]
-        expected_medals_2 = [{"cost": 2, "defence": 5590, "direction": "Reversed", "element": "Speed", "hits": 5, "id": 637, "image_link": "/static/medal_images//Key_Art_3_6.png", "multiplier": "x1.38-2.72", "name": "Key Art #3", "notes": "Decreases enemy defense by one stage for the remainder of the turn; deals more damage the greater your HP", "pullable": "Yes", "rarity": 6, "region": "na", "strength": 5677, "targets": "All", "tier": 5, "type": "Combat", "voice_link": None}]
-        expected_medals_3 = [{"cost": 1, "defence": 5861, "direction": "Upright", "element": "Magic", "hits": 4, "id": 1014, "image_link": "/static/medal_images//HD_Invi_EX_6.png", "multiplier": "x3.12-4.32", "name": "HD Invi [EX]", "notes": "Increases your magic attack by seven steps, decreases enemy general defense by two steps and enemy magic defense by seven steps for two turns; deals more damage when only one enemy in the group remains or all raid parts have been destroyed; doesn't affect enemy counters", "pullable": "No", "rarity": 6, "region": "na", "strength": 6030, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}]
+        expected_medals_1 = [MedalFactory.medal({"cost": 2, "defence": 5618, "direction": "Upright", "element": "Speed", "hits": 13, "id": 862, "image_link": "/static/medal_images//KH_02_Terra_and_Ventus_6.png", "multiplier": "x3.40", "name": "KH0.2 Terra & Ventus", "notes": "Raises your power and speed attack by two steps for two turns; deals large damage", "pullable": "No", "rarity": 6, "region": "na", "strength": 5696, "targets": "Single", "tier": 5, "type": "Combat", "voice_link": None})]
+        expected_medals_2 = [MedalFactory.medal({"cost": 2, "defence": 5590, "direction": "Reversed", "element": "Speed", "hits": 5, "id": 637, "image_link": "/static/medal_images//Key_Art_3_6.png", "multiplier": "x1.38-2.72", "name": "Key Art #3", "notes": "Decreases enemy defense by one stage for the remainder of the turn; deals more damage the greater your HP", "pullable": "Yes", "rarity": 6, "region": "na", "strength": 5677, "targets": "All", "tier": 5, "type": "Combat", "voice_link": None})]
+        expected_medals_3 = [MedalFactory.medal({"cost": 1, "defence": 5861, "direction": "Upright", "element": "Magic", "hits": 4, "id": 1014, "image_link": "/static/medal_images//HD_Invi_EX_6.png", "multiplier": "x3.12-4.32", "name": "HD Invi [EX]", "notes": "Increases your magic attack by seven steps, decreases enemy general defense by two steps and enemy magic defense by seven steps for two turns; deals more damage when only one enemy in the group remains or all raid parts have been destroyed; doesn't affect enemy counters", "pullable": "No", "rarity": 6, "region": "na", "strength": 6030, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None})]
 
         with self.requests_mock:
             medals_1 = self.scrapper.get_medals('KH0.2 Terra & Ventus')
@@ -103,88 +109,63 @@ class TestScrapper(unittest.TestCase):
         with self.requests_mock:
             self.assertCountEqual(self.scrapper.get_medal_names(), expected_names)
 
-    @patch.object(DBWrapper, 'find_all', create=True)
-    def test_missing_medals_when_there_are_missing_medals(self, mock_find_all):
+    @patch.object(Medal, 'select', create=True)
+    def test_missing_medals_when_there_are_missing_medals(self, mock_select):
         all_medals_file = 'test/fixtures/scrapper/medal_names.txt'
         with open(all_medals_file) as content:
-            medals = [name.strip() for name in content.readlines()]
-            mock_find_all.return_value = medals[:-3]
+            medals = [Medal(name=name.strip()) for name in content.readlines()]
+            mock_select.return_value = medals[:-3]
 
         expected_missing_medals = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
         with self.requests_mock:
             missing_medals = self.scrapper.missing_medals()
 
         self.assertCountEqual(expected_missing_medals, missing_medals)
-        mock_find_all.assert_called_once_with('Medals', ['name'])
+        mock_select.assert_called_once()
 
-    @patch.object(DBWrapper, 'find_all', create=True)
-    def test_missing_medals_when_there_arent_missing_medals(self, mock_find_all):
+    @patch.object(Medal, 'select', create=True)
+    def test_missing_medals_when_there_arent_missing_medals(self, mock_select):
         all_medals_file = 'test/fixtures/scrapper/medal_names.txt'
         with open(all_medals_file) as content:
-            medals = [name.strip() for name in content.readlines()]
-            mock_find_all.return_value = medals
+            medals = [Medal(name=name.strip()) for name in content.readlines()]
+            mock_select.return_value = medals
 
         with self.requests_mock:
             missing_medals = self.scrapper.missing_medals()
 
         self.assertCountEqual(missing_medals, [])
-        mock_find_all.assert_called_once_with('Medals', ['name'])
+        mock_select.assert_called_once()
 
-    @patch.object(DBWrapper, 'save', create=True)
-    @patch.object(DBWrapper, 'is_present', create=True)
+    @patch.object(Medal, 'get_or_none', return_value=True)
     @patch.object(Scrapper, 'missing_medals')
-    def test_scrape_missing_medals_when_medals_are_not_in_DB(self, mock_missing_medals, mock_db_is_present, mock_db_save):
+    def test_scrape_missing_medals_when_medals_are_not_in_DB(self, mock_missing_medals, mock_get_or_none):
         mock_missing_medals.return_value = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
-        mock_db_is_present.return_value = False
-        mock_db_save.return_value = True
-        invi_medal = {"cost": 1, "defence": 5861, "direction": "Upright", "element": "Magic", "hits": 4, "id": 1014, "image_link": "/static/medal_images//HD_Invi_EX_6.png", "multiplier": "x3.12-4.32", "name": "HD Invi [EX]", "notes": "Increases your magic attack by seven steps, decreases enemy general defense by two steps and enemy magic defense by seven steps for two turns; deals more damage when only one enemy in the group remains or all raid parts have been destroyed; doesn't affect enemy counters", "pullable": "No", "rarity": 6, "region": "na", "strength": 6030, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}
-        axel_b_5_medal = {"cost": 1, "defence": 4274, "direction": "Reversed", "element": "Power", "hits": 6, "id": 986, "image_link": "/static/medal_images//Axel_B_5.png", "multiplier": "x1.72-3.20", "name": "Axel B", "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck", "pullable": "No", "rarity": 5, "region": "na", "strength": 4377, "targets": "Random", "tier": 3, "type": "Combat", "voice_link": None}
-        axel_b_6_medal = {"cost": 1, "defence": 5512, "direction": "Reversed", "element": "Power", "hits": 6, "id": 987, "image_link": "/static/medal_images//Axel_B_6.png", "multiplier": "x1.78-3.26", "name": "Axel B", "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck", "pullable": "No", "rarity": 6, "region": "na", "strength": 5645, "targets": "Random", "tier": 3, "type": "Combat", "voice_link": None}
-        ill_halloween_goofy_medal = {"cost": 7, "defence": 5645, "direction": "Upright", "element": "Power", "hits": 3, "id": 1051, "image_link": "/static/medal_images//Illustrated_Halloween_Goofy_6.png", "multiplier": "x4.13", "name": "Illustrated Halloween Goofy", "notes": "Restores 3 guates", "pullable": "No", "rarity": 6, "region": "na", "strength": 5759, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}
-        
-        with self.requests_mock:
-            success = self.scrapper.scrape_missing_medals()
-
-        self.assertTrue(success)
-        mock_db_is_present.assert_any_call('Medals', {"id": 1014})
-        mock_db_is_present.assert_any_call('Medals', {"id": 986})
-        mock_db_is_present.assert_any_call('Medals', {"id": 987})
-        mock_db_is_present.assert_any_call('Medals', {"id": 1051})
-        mock_db_save.assert_any_call('Medals', invi_medal)
-        mock_db_save.assert_any_call('Medals', axel_b_5_medal)
-        mock_db_save.assert_any_call('Medals', axel_b_6_medal)
-        mock_db_save.assert_any_call('Medals', ill_halloween_goofy_medal)
-
-    @patch.object(DBWrapper, 'save', create=True)
-    @patch.object(DBWrapper, 'is_present', create=True)
-    @patch.object(Scrapper, 'missing_medals')
-    def test_scrape_missing_medals_when_medals_are_in_DB(self, mock_missing_medals, mock_db_is_present, mock_db_save):
-        mock_missing_medals.return_value = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
-        mock_db_is_present.return_value = True
 
         with self.requests_mock:
             success = self.scrapper.scrape_missing_medals()
 
         self.assertTrue(success)
-        mock_db_is_present.assert_any_call('Medals', {"id": 1014})
-        mock_db_is_present.assert_any_call('Medals', {"id": 986})
-        mock_db_is_present.assert_any_call('Medals', {"id": 987})
-        mock_db_is_present.assert_any_call('Medals', {"id": 1051})
-        mock_db_save.assert_not_called()
 
-    @patch.object(DBWrapper, 'save', create=True)
-    @patch.object(DBWrapper, 'is_present', create=True)
+    @patch.object(Medal, 'get_or_none', return_value=True)
     @patch.object(Scrapper, 'missing_medals')
-    def test_scrape_missing_medals_when_problem_in_DB(self, mock_missing_medals, mock_db_is_present, mock_db_save):
+    def test_scrape_missing_medals_when_medals_are_in_DB(self, mock_missing_medals, mock_get_or_none):
+        mock_missing_medals.return_value = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
+
+        with self.requests_mock:
+            success = self.scrapper.scrape_missing_medals()
+
+        self.assertTrue(success)
+
+    @patch.object(Medal, 'save', create=True)
+    @patch.object(Medal, 'get_or_none', return_value=False)
+    @patch.object(Scrapper, 'missing_medals')
+    def test_scrape_missing_medals_when_problem_in_DB(self, mock_missing_medals, mock_get_or_none, mock_medal_save):
         mock_missing_medals.return_value = ['hd invi [ex]']
-        mock_db_is_present.return_value = False
-        mock_db_save.return_value = True
-        mock_db_save.side_effect = Exception('The DB couldnt save the medal')
+        mock_medal_save.return_value = 1
         invi_medal = {"cost": 1, "defence": 5861, "direction": "Upright", "element": "Magic", "hits": 4, "id": 1014, "image_link": "/static/medal_images//HD_Invi_EX_6.png", "multiplier": "x3.12-4.32", "name": "HD Invi [EX]", "notes": "Increases your magic attack by seven steps, decreases enemy general defense by two steps and enemy magic defense by seven steps for two turns; deals more damage when only one enemy in the group remains or all raid parts have been destroyed; doesn't affect enemy counters", "pullable": "No", "rarity": 6, "region": "na", "strength": 6030, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}
 
         with self.requests_mock:
             success = self.scrapper.scrape_missing_medals()
 
         self.assertFalse(success)
-        mock_db_is_present.assert_any_call('Medals', {"id": 1014})
-        mock_db_save.assert_any_call('Medals', invi_medal)
+        mock_medal_save.assert_called()
