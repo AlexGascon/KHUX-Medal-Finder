@@ -56,7 +56,7 @@ class Scrapper:
 
                 for medal in matching_medals:
                     if not Medal.get_or_none(Medal.id == medal.id):
-                        success = (DBWrapper.save('Medals', medal) and success)
+                        success = (MedalFactory.medal(medal) and success)
 
         except Exception as e:
             success = False
