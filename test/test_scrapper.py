@@ -4,7 +4,6 @@ import requests_mock
 from unittest.mock import patch
 
 from src.scrapper import Scrapper
-from src.db import DBWrapper
 from src.models import Medal, MedalFactory
 
 

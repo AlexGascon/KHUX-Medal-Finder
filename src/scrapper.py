@@ -1,7 +1,6 @@
 import requests
 from urllib.parse import urlencode
 
-from src.db import DBWrapper
 from src.models import Medal, MedalFactory
 
 
