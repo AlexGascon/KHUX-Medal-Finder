@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 from src.scrapper import Scrapper
 from src.db import DBWrapper
+from src.models import Medal
 
 
 class TestScrapper(unittest.TestCase):
@@ -103,32 +104,32 @@ class TestScrapper(unittest.TestCase):
         with self.requests_mock:
             self.assertCountEqual(self.scrapper.get_medal_names(), expected_names)
 
-    @patch.object(DBWrapper, 'find_all', create=True)
-    def test_missing_medals_when_there_are_missing_medals(self, mock_find_all):
+    @patch.object(Medal, 'select', create=True)
+    def test_missing_medals_when_there_are_missing_medals(self, mock_select):
         all_medals_file = 'test/fixtures/scrapper/medal_names.txt'
         with open(all_medals_file) as content:
-            medals = [name.strip() for name in content.readlines()]
-            mock_find_all.return_value = medals[:-3]
+            medals = [Medal(name=name.strip()) for name in content.readlines()]
+            mock_select.return_value = medals[:-3]
 
         expected_missing_medals = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
         with self.requests_mock:
             missing_medals = self.scrapper.missing_medals()
 
         self.assertCountEqual(expected_missing_medals, missing_medals)
-        mock_find_all.assert_called_once_with('Medals', ['name'])
+        mock_select.assert_called_once()
 
-    @patch.object(DBWrapper, 'find_all', create=True)
-    def test_missing_medals_when_there_arent_missing_medals(self, mock_find_all):
+    @patch.object(Medal, 'select', create=True)
+    def test_missing_medals_when_there_arent_missing_medals(self, mock_select):
         all_medals_file = 'test/fixtures/scrapper/medal_names.txt'
         with open(all_medals_file) as content:
-            medals = [name.strip() for name in content.readlines()]
-            mock_find_all.return_value = medals
+            medals = [Medal(name=name.strip()) for name in content.readlines()]
+            mock_select.return_value = medals
 
         with self.requests_mock:
             missing_medals = self.scrapper.missing_medals()
 
         self.assertCountEqual(missing_medals, [])
-        mock_find_all.assert_called_once_with('Medals', ['name'])
+        mock_select.assert_called_once()
 
     @patch.object(DBWrapper, 'save', create=True)
     @patch.object(DBWrapper, 'is_present', create=True)

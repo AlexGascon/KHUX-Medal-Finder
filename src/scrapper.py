@@ -2,6 +2,7 @@ import requests
 from urllib.parse import urlencode
 
 from src.db import DBWrapper
+from src.models import Medal
 
 
 class Scrapper:
@@ -38,7 +39,7 @@ class Scrapper:
 
     def missing_medals(self):
         """Gets the names of all the medals that aren't yet on the DB"""
-        current_medals = set(DBWrapper.find_all('Medals', ['name']))
+        current_medals = set(medal.name for medal in Medal.select())
         total_medals = set(self.get_medal_names())
 
         return list(total_medals - current_medals)
