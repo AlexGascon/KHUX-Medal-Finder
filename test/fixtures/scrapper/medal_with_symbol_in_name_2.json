@@ -1,0 +1,24 @@
+{
+  "medal": {
+    "0": {
+      "cost": 2,
+      "defence": 5590,
+      "direction": "Reversed",
+      "element": "Speed",
+      "hits": 5,
+      "id": 637,
+      "image_link": "/static/medal_images//Key_Art_3_6.png",
+      "multiplier": "x1.38-2.72",
+      "name": "Key Art #3",
+      "notes": "Decreases enemy defense by one stage for the remainder of the turn; deals more damage the greater your HP",
+      "pullable": "Yes",
+      "rarity": 6,
+      "region": "na",
+      "strength": 5677,
+      "targets": "All",
+      "tier": 5,
+      "type": "Combat",
+      "voice_link": null
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "medal": {
+    "0": {
+      "cost": 7,
+      "defence": 5645,
+      "direction": "Upright",
+      "element": "Power",
+      "hits": 3,
+      "id": 1051,
+      "image_link": "/static/medal_images//Illustrated_Halloween_Goofy_6.png",
+      "multiplier": "x4.13",
+      "name": "Illustrated Halloween Goofy",
+      "notes": "Restores 3 guates",
+      "pullable": "No",
+      "rarity": 6,
+      "region": "na",
+      "strength": 5759,
+      "targets": "All",
+      "tier": 7,
+      "type": "Combat",
+      "voice_link": null
+    }
+  }
+}
