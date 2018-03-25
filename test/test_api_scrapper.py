@@ -3,8 +3,8 @@ import json
 import requests_mock
 from unittest.mock import patch
 
-from src.scrapper import Scrapper
-from src.models import Medal, MedalFactory
+from khux_medal_finder.api import Scrapper
+from khux_medal_finder.models import Medal, MedalFactory
 
 
 class TestScrapper(unittest.TestCase):

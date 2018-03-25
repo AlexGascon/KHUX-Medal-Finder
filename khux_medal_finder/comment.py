@@ -1,4 +1,4 @@
-class CommentParser:
+class RequirementExtractor:
 
     def __init__(self, comment):
         self.comment = comment.lower()
