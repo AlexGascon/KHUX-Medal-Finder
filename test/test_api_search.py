@@ -1,18 +1,20 @@
 import unittest
 import requests_mock
 import json
-from unittest import mock
 
-from src.search import compose_endpoint, get_medals, combine_searches
+from khux_medal_finder.api import Search
 
 
 class TestSearch(unittest.TestCase):
+
+    def setUp(self):
+        self.search = Search()
 
     def test_compose_endpoint(self):
         filters = {"direction": "Upright", "element": "Power", "cost": 4}
         expected_endpoint = 'http://www.khuxbot.com/api/v1/medal?q=data&filter={"rarity": 6,"direction":"Upright","element":"Power","cost":"4"}'
 
-        self.assertEqual(expected_endpoint, compose_endpoint(filters))
+        self.assertEqual(expected_endpoint, self.search.endpoint(filters))
 
     @requests_mock.Mocker()
     def test_get_medals(self, mock_requests):
@@ -28,7 +30,7 @@ class TestSearch(unittest.TestCase):
             {"cost": 4, "defence": 5718, "direction": "Upright", "element": "Power", "hits": 11, "id": 982, "image_link": "/static/medal_images//Toon_Sora_6.png", "multiplier": "x1.99-3.35", "name": "Toon Sora", "notes": "Increases the enemy's count by +1, increases your PSM attack by three steps for two turns, deals more damage the higher your HP", "pullable": "No", "rarity": 6, "region": "na", "strength": 5756, "targets": "All", "tier": 6, "type": "Combat", "voice_link": None}
         ]
 
-        self.assertListEqual(expected_medals, get_medals(filters))
+        self.assertListEqual(expected_medals, self.search.medals(filters))
 
     @requests_mock.Mocker()
     def test_combine_searches(self, mock_requests):
@@ -54,7 +56,7 @@ class TestSearch(unittest.TestCase):
             {"cost": 4, "defence": 5693, "direction": "Upright", "element": "Power", "hits": 8, "id": 1043, "image_link": "/static/medal_images//HD_KHII_Leon_6.png", "multiplier": "x2.51-4.20", "name": "HD KHII Leon", "notes": "Increases your upright attack by one step and decreases enem general defense by three steps for one turn; deals more damage when set in the sixth slot of your deck (pet slot)", "pullable": "Yes", "rarity": 6, "region": "na", "strength": 5741, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}
         ]
 
-        self.assertListEqual(expected_medals, combine_searches(filters))
+        self.assertListEqual(expected_medals, self.search.combine_searches(filters))
 
 
 if __name__ == '__main__':
