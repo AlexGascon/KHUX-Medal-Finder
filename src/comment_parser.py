@@ -7,6 +7,7 @@ class CommentParser:
     def extract_requirements(self):
         self.parse_element()
         self.parse_targets()
+        self.parse_direction()
 
     def parse_element(self):
         elements = []
@@ -25,7 +26,6 @@ class CommentParser:
 
         self.requirements['elements'] = elements
 
-
     def parse_targets(self):
         targets = []
 
@@ -39,3 +39,14 @@ class CommentParser:
             targets.append('All')
 
         self.requirements['targets'] = targets
+
+    def parse_direction(self):
+        direction = []
+
+        if 'upright' in self.comment:
+            direction.append('Upright')
+
+        if 'reversed' in self.comment:
+            direction.append('Reversed')
+
+        self.requirements['direction'] = direction

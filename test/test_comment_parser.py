@@ -15,7 +15,7 @@ class TestCommentParser(unittest.TestCase):
         self.assertCountEqual(parser.requirements['elements'], ['Power'])
 
 
-    def test_element_speed_medals(self):
+    def test_element_speed(self):
         comment = "Blablablablabla speed blablablabla"
 
         parser = CommentParser(comment)
@@ -24,7 +24,7 @@ class TestCommentParser(unittest.TestCase):
         self.assertCountEqual(parser.requirements['elements'], ['Speed'])
 
 
-    def test_element_magic_medals(self):
+    def test_element_magic(self):
         comment = "Blablablablabla magic blablablabla"
 
         parser = CommentParser(comment)
@@ -33,7 +33,7 @@ class TestCommentParser(unittest.TestCase):
         self.assertCountEqual(parser.requirements['elements'], ['Magic'])
 
 
-    def test_element_several_elements_medals(self):
+    def test_element_several_elements(self):
         comment = "Blablablablabla power speed blablablabla"
 
         parser = CommentParser(comment)
@@ -42,7 +42,7 @@ class TestCommentParser(unittest.TestCase):
         self.assertCountEqual(parser.requirements['elements'], ['Power', 'Speed'])
 
 
-    def test_element_psm_medals(self):
+    def test_element_psm(self):
         comment = "Blablablablabla PSM blablablabla"
 
         parser = CommentParser(comment)
@@ -69,7 +69,7 @@ class TestCommentParser(unittest.TestCase):
         
         
     # TARGETS CHECK
-    def test_targets_single_target(self):
+    def test_targets_single(self):
         comment = "blablablabla single blablabla"
         
         parser = CommentParser(comment)
@@ -78,7 +78,7 @@ class TestCommentParser(unittest.TestCase):
         self.assertCountEqual(parser.requirements['targets'], ['Single'])
         
     
-    def test_targets_aoe_target(self):
+    def test_targets_aoe(self):
         comment = "blablablabla aoe blablabla"
 
         parser = CommentParser(comment)
@@ -87,7 +87,7 @@ class TestCommentParser(unittest.TestCase):
         self.assertCountEqual(parser.requirements['targets'], ['All'])
 
 
-    def test_targets_random_target(self):
+    def test_targets_random(self):
         comment = "blablablabla random blablabla"
 
         parser = CommentParser(comment)
@@ -96,7 +96,7 @@ class TestCommentParser(unittest.TestCase):
         self.assertCountEqual(parser.requirements['targets'], ['Random'])
 
 
-    def test_targets_multi_target(self):
+    def test_targets_multi(self):
         comment = "blablablabla multi blablabla"
 
         parser = CommentParser(comment)
@@ -105,7 +105,7 @@ class TestCommentParser(unittest.TestCase):
         self.assertCountEqual(parser.requirements['targets'], ['All'])
 
 
-    def test_targets_several_targets(self):
+    def test_targets_several(self):
         comment = "blablablabla single aoe random blablabla"
 
         parser = CommentParser(comment)
@@ -130,3 +130,38 @@ class TestCommentParser(unittest.TestCase):
         parser.extract_requirements()
 
         self.assertCountEqual(parser.requirements['targets'], ['Single', 'All'])
+
+
+    # DIRECTION CHECK
+    def test_direction_upright(self):
+        comment = "blabla upright blabla"
+
+        parser = CommentParser(comment)
+        parser.extract_requirements()
+
+        self.assertCountEqual(parser.requirements['direction'], ['Upright'])
+
+    def test_direction_reversed(self):
+        comment = "blabla reversed blabla"
+
+        parser = CommentParser(comment)
+        parser.extract_requirements()
+
+        self.assertCountEqual(parser.requirements['direction'], ['Reversed'])
+
+    def test_direction_both_directions(self):
+        comment = "blabla upright reversed blabla"
+
+        parser = CommentParser(comment)
+        parser.extract_requirements()
+
+        self.assertCountEqual(parser.requirements['direction'], ['Upright', 'Reversed'])
+
+    def test_direction_is_case_insensitive(self):
+        comment = "blabla UPRIGHT REVERSED blabla"
+
+        parser = CommentParser(comment)
+        parser.extract_requirements()
+
+        self.assertCountEqual(parser.requirements['direction'], ['Upright', 'Reversed'])
+
