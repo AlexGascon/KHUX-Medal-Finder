@@ -15,6 +15,8 @@ _Specify here the places where this change has been requested_
 
 - **Related PRs:** _List here the PRs related with this one_
 
+- **Other links:** _Links to other places where this change may have been addressed or requested_
+
 ### Notes and warnings
 _Things that other developers have to take into account related with the changes you've done_
 
