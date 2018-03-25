@@ -6,7 +6,7 @@ class RedditService:
 
     def __init__(self):
         self.reddit = praw.Reddit(user_agent='Medal finder bot by /u/Pawah/',
-                                  client_id=os.environ.get('_34s5N6yFVugMA'),
+                                  client_id=os.environ.get('REDDIT_BOT_TOKEN'),
                                   client_secret=os.environ.get('REDDIT_BOT_SECRET'),
                                   username=os.environ.get('REDDIT_BOT_USERNAME'),
                                   password=os.environ.get('REDDIT_BOT_PASSWORD'))
