@@ -1,5 +1,6 @@
 import os
 import praw
+import prawcore
 
 
 class RedditService:
@@ -10,9 +11,37 @@ class RedditService:
                                   client_secret=os.environ.get('REDDIT_BOT_SECRET'),
                                   username=os.environ.get('REDDIT_BOT_USERNAME'),
                                   password=os.environ.get('REDDIT_BOT_PASSWORD'))
-
         self.subreddit = self.reddit.subreddit(os.environ.get('REDDIT_SUBREDDIT'))
+
+        self.valid = False
+        self.validate_authentication()
 
     @property
     def comments(self):
-        return self.subreddit.comments()
+        # Using subreddit.stream.comments() we get the newest comments of the subreddit, unlike
+        # subreddit.comments() that returns all of them but starting with the oldest ones.
+        return self.subreddit.stream.comments()
+
+    def validate_authentication(self):
+        """Validates if we are correctly authenticated on Reddit and sets the instance variable 'valid' to the result.
+
+        This is necessary because praw.Reddit returns us Reddit and Subreddit instances as if there hadn't been any
+        problem even when the authentication is invalid, and therefore we won't realize if it happens."""
+        try:
+            self.reddit.user.me()
+            self.valid = True
+
+        except prawcore.OAuthException:
+            print('Invalid username/password. Verify that the account you\'re using is authorized on the script app')
+            self.valid = False
+            raise
+
+        except prawcore.exceptions.ResponseException:
+            print('Invalid auth. Verify your credentials')
+            self.valid = False
+            raise
+
+        # Other errors
+        except:
+            self.valid = False
+            raise
