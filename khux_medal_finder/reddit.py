@@ -31,17 +31,17 @@ class RedditService:
             self.reddit.user.me()
             self.valid = True
 
-        except prawcore.OAuthException:
+        except prawcore.OAuthException as exception:
             print('Invalid username/password. Verify that the account you\'re using is authorized on the script app')
             self.valid = False
-            raise
+            raise exception
 
-        except prawcore.exceptions.ResponseException:
+        except prawcore.exceptions.ResponseException as exception:
             print('Invalid auth. Verify your credentials')
             self.valid = False
-            raise
+            raise exception
 
         # Other errors
-        except:
+        except BaseException as exception:
             self.valid = False
-            raise
+            raise exception
