@@ -11,16 +11,9 @@ class RedditService:
                                   client_secret=os.environ.get('REDDIT_BOT_SECRET'),
                                   username=os.environ.get('REDDIT_BOT_USERNAME'),
                                   password=os.environ.get('REDDIT_BOT_PASSWORD'))
-        self.subreddit = self.reddit.subreddit(os.environ.get('REDDIT_SUBREDDIT'))
 
         self.valid = False
         self.validate_authentication()
-
-    @property
-    def comments(self):
-        # Using subreddit.stream.comments() we get the newest comments of the subreddit, unlike
-        # subreddit.comments() that returns all of them but starting with the oldest ones.
-        return self.subreddit.stream.comments()
 
     def validate_authentication(self):
         """Validates if we are correctly authenticated on Reddit and sets the instance variable 'valid' to the result.
@@ -45,3 +38,13 @@ class RedditService:
         except BaseException as exception:
             self.valid = False
             raise exception
+
+    def subreddit(self, subreddit_name):
+        return self.reddit.subreddit(subreddit_name)
+
+    def subreddit_comments(self, subreddit_name):
+        subreddit = self.subreddit(subreddit_name)
+        # Using .stream.comments() we get the newest comments of the subreddit, unlike
+        # .comments() that returns all of them but starting with the oldest ones.
+        return subreddit.stream.comments()
+

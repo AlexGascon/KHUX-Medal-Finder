@@ -21,16 +21,16 @@ class TestRedditService(unittest.TestCase):
             'REDDIT_SUBREDDIT': "fake subreddit"
         }
 
-        self.patcher = mock.patch.dict(os.environ, self.ENV_MOCK)
-        self.patcher.start()
+        self.env_patcher = mock.patch.dict(os.environ, self.ENV_MOCK)
+        self.env_patcher.start()
 
     def test_reddit_instantiated_correctly_if_there_are_credentials(self):
         with mock.patch('praw.models.User.me', return_value=None):
             self.assertIsInstance(RedditService().reddit, praw.Reddit)
 
-    def test_subreddit_instantiated_correctly_if_there_are_credentials(self):
+    def test_subreddit_obtained_correctly_if_there_are_credentials(self):
         with mock.patch('praw.models.User.me', return_value=None):
-            self.assertIsInstance(RedditService().subreddit, praw.models.Subreddit)
+            self.assertIsInstance(RedditService().subreddit('test'), praw.models.Subreddit)
 
     def test_reddit_service_valid_if_credentials_are_correct(self):
         # This is correct if it doesn't raise any exception
@@ -83,4 +83,4 @@ class TestRedditService(unittest.TestCase):
                 self.assertFalse(reddit.valid)
 
     def tearDown(self):
-        self.patcher.stop()
+        self.env_patcher.stop()
