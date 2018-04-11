@@ -5,9 +5,9 @@ class RequirementExtractor:
         self.requirements = {}
 
     def extract_requirements(self):
-        self.parse_element()
-        self.parse_targets()
-        self.parse_direction()
+        self.requirements['elements'] = self.parse_element()
+        self.requirements['targets'] = self.parse_targets()
+        self.requirements['direction'] = self.parse_direction()
 
     def parse_element(self):
         elements = []
@@ -24,7 +24,7 @@ class RequirementExtractor:
         if 'psm' in self.comment:
             elements = ['Power', 'Magic', 'Speed']
 
-        self.requirements['elements'] = elements
+        return elements
 
     def parse_targets(self):
         targets = []
@@ -38,7 +38,7 @@ class RequirementExtractor:
         if any(word in self.comment for word in ['aoe', 'multi']):
             targets.append('All')
 
-        self.requirements['targets'] = targets
+        return targets
 
     def parse_direction(self):
         direction = []
@@ -49,4 +49,4 @@ class RequirementExtractor:
         if 'reversed' in self.comment:
             direction.append('Reversed')
 
-        self.requirements['direction'] = direction
+        return direction
