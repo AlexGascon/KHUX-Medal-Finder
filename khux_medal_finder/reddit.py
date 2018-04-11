@@ -41,10 +41,3 @@ class RedditService:
 
     def subreddit(self, subreddit_name):
         return self.reddit.subreddit(subreddit_name)
-
-    def subreddit_comments(self, subreddit_name):
-        subreddit = self.subreddit(subreddit_name)
-        # Using .stream.comments() we get the newest comments of the subreddit, unlike
-        # .comments() that returns all of them but starting with the oldest ones.
-        return subreddit.stream.comments()
-
