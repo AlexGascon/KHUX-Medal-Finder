@@ -79,3 +79,20 @@ class MedalFactory:
         created_medal.save()
 
         return created_medal
+
+
+class Comment(BaseModel):
+    """Comment posted by a user on Reddit"""
+    author = CharField()
+    comment_id = CharField()
+    text = TextField()
+    timestamp = TimestampField()
+    url = CharField(max_length=400)
+
+
+class Reply(Comment):
+    """Reply made by the bot to one Reddit comment. Though it could be modelled
+    using Comment, this allows us to extend its functionality"""
+    author = CharField(default=lambda x: 'khux_medal_finder')
+    original_comment = ForeignKeyField(Comment)
+    success = BooleanField()
