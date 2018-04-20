@@ -41,3 +41,7 @@ class RedditService:
 
     def subreddit(self, subreddit_name):
         return self.reddit.subreddit(subreddit_name)
+
+    def last_subreddit_comments(self, subreddit_name, amount=1000):
+        subreddit = self.reddit.subreddit(subreddit_name)
+        return subreddit.comments(limit=amount)
