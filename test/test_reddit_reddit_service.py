@@ -82,5 +82,38 @@ class TestRedditService(unittest.TestCase):
                 reddit = RedditService()
                 self.assertFalse(reddit.valid)
 
+    def test_subreddit_uses_subreddit_name(self):
+        pass
+
+    def test_last_subreddit_comments_uses_subreddit_name(self):
+        pass
+
+    def test_last_subreddit_comments_uses_amount(self):
+        pass
+
+    def test_reply_if_there_arent_medals_responds_with_the_correct_text(self):
+        pass
+
+    def test_reply_if_there_arent_medals_creates_comment_object_with_the_correct_attributes(self):
+        pass
+
+    def test_reply_if_there_arent_medals_creates_reply_object_with_the_correct_attributes(self):
+        pass
+
+    def test_reply_if_there_are_medals_responds_with_the_correct_text(self):
+        pass
+
+    def test_reply_if_there_are_medals_creates_comment_object_with_the_correct_attributes(self):
+        pass
+
+    def test_reply_if_there_are_medals_creates_reply_object_with_the_correct_attributes(self):
+        pass
+
+    def test_reply_if_there_is_an_error_commenting_doesnt_create_comment_object(self):
+        pass
+
+    def test_reply_if_there_is_an_error_commenting_doesnt_create_reply_object(self):
+        pass
+
     def tearDown(self):
         self.env_patcher.stop()
