@@ -4,6 +4,7 @@ import prawcore
 import unittest
 import peewee
 from unittest import mock
+from datetime import datetime
 
 from khux_medal_finder.models import Comment, Reply
 from khux_medal_finder.reddit import RedditService
@@ -134,10 +135,32 @@ class TestRedditService(unittest.TestCase):
         self.mock_comment.reply.assert_called_once_with(expected_reply_body)
 
     def test_reply_if_there_arent_medals_creates_comment_object_with_the_correct_attributes(self):
-        pass
+        self.mock_comment.reply.return_value = self.mock_reply
+
+        self.reddit.reply(self.mock_comment, [])
+        last_comment = Comment.select().order_by(-Comment.id).get()
+
+        self.assertEqual(last_comment.author, 'Francisco Umbral')
+        self.assertEqual(last_comment.comment_id, 'abcdex')
+        self.assertEqual(last_comment.text, 'Yo he venido aqui a hablar de mi libro')
+        self.assertEqual(last_comment.timestamp, datetime.fromtimestamp(1))
+        self.assertEqual(last_comment.url, 'https://yo.hevenidoaquiahablardemi.libro/comentario/11234/')
 
     def test_reply_if_there_arent_medals_creates_reply_object_with_the_correct_attributes(self):
-        pass
+        self.mock_comment.reply.return_value = self.mock_reply
+        expected_reply_body = "I'm sorry, I couldn't find any medal that match your requirements.\n\nBeeep bop. I'm a bot! I've been created by Pawah and you can find my code on Github"
+
+        self.reddit.reply(self.mock_comment, [])
+        obtained_reply = Reply.select().order_by(-Reply.id).get()
+        last_comment = Comment.select().order_by(-Comment.id).get()
+
+        self.assertFalse(obtained_reply.success)
+        self.assertEqual(obtained_reply.original_comment, last_comment)
+        self.assertEqual(obtained_reply.author, 'khux_medal_finder')
+        self.assertEqual(obtained_reply.comment_id, 'xedcba')
+        self.assertEqual(obtained_reply.text, expected_reply_body)
+        self.assertEqual(obtained_reply.timestamp, datetime.fromtimestamp(2))
+        self.assertEqual(obtained_reply.url, 'https://medium.com/alexgascon')
 
     def test_reply_if_there_are_medals_responds_with_the_correct_text(self):
         pass
