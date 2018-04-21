@@ -3,7 +3,7 @@ import praw
 import prawcore
 
 from khux_medal_finder import helpers
-from khux_medal_finder.models import Comment, Reply, BaseModel
+from khux_medal_finder.models import Comment, Reply
 
 
 class RedditService:
@@ -61,8 +61,8 @@ class RedditService:
 
         reply = comment.reply(reply_body)
 
-        #import ipdb; ipdb.set_trace()
-        comment_object = Comment.create(author=comment.author, comment_id=comment.id, text=comment.body, timestamp=comment.created, url=comment.permalink)
+        comment_object = Comment.create(author=comment.author, comment_id=comment.id, text=comment.body,
+                                        timestamp=comment.created, url=comment.permalink)
         reply_object = Reply.create(original_comment=comment_object, success=success, comment_id=reply.id,
                                     text=reply_body, timestamp=reply.created, url=reply.permalink)
 
