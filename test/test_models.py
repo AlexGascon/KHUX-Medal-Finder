@@ -85,10 +85,14 @@ class TestMedalFactory(BaseDBTestCase):
         with open('test/fixtures/models/combat_medal_data.json') as fixture:
             self.combat_medal_json = json.loads(fixture.read())
 
+        with open('test/fixtures/models/combat_medal_with_ranged_multiplier_data.json') as fixture:
+            self.combat_medal_ranged_multiplier_json = json.loads(fixture.read())
+
         with open('test/fixtures/models/non_combat_medal_data.json') as fixture:
             self.non_combat_medal_json = json.loads(fixture.read())
 
         self.combat_medal = MedalFactory.medal(self.combat_medal_json)
+        self.combat_medal_ranged_multiplier = MedalFactory.medal(self.combat_medal_ranged_multiplier_json)
 
     def test_creates_medal_if_all_fields_are_present(self):
         self.assertIsInstance(self.combat_medal, Medal)
@@ -104,8 +108,6 @@ class TestMedalFactory(BaseDBTestCase):
         self.assertEqual(self.combat_medal.element, "Speed")
         self.assertEqual(self.combat_medal.hits, 13)
         self.assertEqual(self.combat_medal.image_link, "/static/medal_images//KH_02_Terra_and_Ventus_6.png")
-        self.assertEqual(self.combat_medal.multiplier_min, 3.40)
-        self.assertEqual(self.combat_medal.multiplier_max, 3.40)
         self.assertEqual(self.combat_medal.name, "KH0.2 Terra & Ventus")
         self.assertEqual(self.combat_medal.notes, "Raises your power and speed attack by two steps for two turns; deals large damage")
         self.assertEqual(self.combat_medal.pullable, "No")
@@ -116,6 +118,14 @@ class TestMedalFactory(BaseDBTestCase):
         self.assertEqual(self.combat_medal.tier, 5)
         self.assertEqual(self.combat_medal.type, "Combat")
         self.assertEqual(self.combat_medal.voice_link, "/some/random/uri/path.mp3")
+
+    def test_parses_multiplier_correctly_if_medal_has_single_multiplier(self):
+        self.assertEqual(self.combat_medal.multiplier_min, 3.40)
+        self.assertEqual(self.combat_medal.multiplier_max, 3.40)
+
+    def test_parses_multiplier_correctly_if_medal_has_ranged_multiplier(self):
+        self.assertEqual(self.combat_medal_ranged_multiplier.multiplier_min, 2.61)
+        self.assertEqual(self.combat_medal_ranged_multiplier.multiplier_max, 3.85)
 
     def test_doesnt_create_medal_if_the_json_contains_an_error(self):
         json_with_error = {"error": "Error message to use in this test"}

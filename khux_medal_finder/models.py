@@ -40,7 +40,15 @@ class MedalFactory:
 
     @classmethod
     def parse_multiplier(cls, multiplier_string):
-        return [3.40, 3.40]
+        multipliers = multiplier_string.split('-')
+        # Removing the 'x' from the string. It appears no matter if the
+        # multiplier was ranged or single, so have to do it in both cases
+        multipliers[0] = multipliers[0][1:]
+
+        if len(multipliers) > 1:
+            return [float(num) for num in multipliers]
+        else:
+            return [float(*multipliers)]*2
 
     @classmethod
     def medal(cls, medal_json):
