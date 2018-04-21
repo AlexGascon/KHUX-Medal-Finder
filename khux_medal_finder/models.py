@@ -101,6 +101,6 @@ class Comment(BaseModel):
 class Reply(Comment):
     """Reply made by the bot to one Reddit comment. Though it could be modelled
     using Comment, this allows us to extend its functionality"""
-    author = CharField(default=lambda x: 'khux_medal_finder')
+    author = CharField(default=lambda: 'khux_medal_finder')
     original_comment = ForeignKeyField(Comment)
     success = BooleanField()

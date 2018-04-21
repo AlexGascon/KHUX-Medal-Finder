@@ -54,14 +54,16 @@ class RedditService:
     def reply(self, comment, medals):
         if medals:
             success = True
-            reply_body = helpers.prepare_reply_body(medals)
+            reply_body = helpers.prepare_reply_body(medals) + self.REPLY_BOT_DESCRIPTION
         else:
             success = False
             reply_body = self.REPLY_NO_MEDALS
 
+        reply = comment.reply(reply_body)
 
-        comment.reply(reply_body)
+        #import ipdb; ipdb.set_trace()
+        comment_object = Comment.create(author=comment.author, comment_id=comment.id, text=comment.body, timestamp=comment.created, url=comment.permalink)
+        reply_object = Reply.create(original_comment=comment_object, success=success, comment_id=reply.id,
+                                    text=reply_body, timestamp=reply.created, url=reply.permalink)
 
-        comment_object = Comment.create(author=comment.author, comment_id=comment.id, text=comment.body,
-                                        timestamp=comment.created, url=comment.permalink)
-        Reply.create(original_comment=comment_object, success=success)
+        return reply_object
