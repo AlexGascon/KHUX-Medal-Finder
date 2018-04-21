@@ -48,3 +48,21 @@ class TestPrepareReplyBody(unittest.TestCase):
                          "Final Boss Xion|Reversed|Speed|All|x2.61 - 3.85|6|1|Decreases enemy defense by two steps for two turns; deals more damage the more ability gauges you have remaining"
         obtained_table = prepare_reply_body([self.combat_medal, self.combat_medal_ranged_multiplier])
         self.assertEqual(obtained_table, expected_table)
+
+    def test_the_amount_of_medals_shown_is_correctly_limited(self):
+        expected_table = "Medal|Direction|Element|Targets|Multiplier|Tier|Hits|Notes\n" + \
+                         ":--|:--|:--|:--|:--|:--|:--|:--|\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage"
+        obtained_table = prepare_reply_body([self.combat_medal]*20)
+
+        self.assertEqual(obtained_table, expected_table)
+
