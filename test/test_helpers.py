@@ -11,7 +11,7 @@ class TestPrepareReplyBody(unittest.TestCase):
         Medal.bind(test_db, bind_refs=False, bind_backrefs=False)
 
         test_db.connect()
-        test_db.create_table(Medal)
+        test_db.create_tables([Medal])
 
         with open('test/fixtures/models/combat_medal_data.json') as fixture:
             combat_medal_json = json.loads(fixture.read())
@@ -34,18 +34,17 @@ class TestPrepareReplyBody(unittest.TestCase):
             prepare_reply_body([])
 
     def test_if_there_is_only_one_medal_generates_the_table_correctly(self):
-        expected_table = """Medal|Direction|Element|Targets|Multiplier|Tier|Hits|Notes
-        :--|:--|:--|:--|:--|:--|:--|:--|
-        KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage"""
+        expected_table = "Medal|Direction|Element|Targets|Multiplier|Tier|Hits|Notes\n" +\
+                         ":--|:--|:--|:--|:--|:--|:--|:--|\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage"
         obtained_table = prepare_reply_body([self.combat_medal])
 
         self.assertEqual(obtained_table, expected_table)
 
     def test_if_there_are_several_medals_generates_the_table_correctly(self):
-        expected_table = """Medal|Direction|Element|Targets|Multiplier|Tier|Hits|Notes
-                :--|:--|:--|:--|:--|:--|:--|:--|
-                KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage
-                Final Boss Xion|Reversed|Speed|All|x2.61 - 3.85|6|1|Decreases enemy defense by two steps for two turns; deals more damage the more ability gauges you have remaining"""
+        expected_table = "Medal|Direction|Element|Targets|Multiplier|Tier|Hits|Notes\n" +\
+                         ":--|:--|:--|:--|:--|:--|:--|:--|\n" + \
+                         "KH0.2 Terra & Ventus|Upright|Speed|Single|x3.4|5|13|Raises your power and speed attack by two steps for two turns; deals large damage\n" + \
+                         "Final Boss Xion|Reversed|Speed|All|x2.61 - 3.85|6|1|Decreases enemy defense by two steps for two turns; deals more damage the more ability gauges you have remaining"
         obtained_table = prepare_reply_body([self.combat_medal, self.combat_medal_ranged_multiplier])
-
         self.assertEqual(obtained_table, expected_table)
