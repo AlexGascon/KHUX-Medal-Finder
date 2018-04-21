@@ -9,7 +9,7 @@ import requests_mock
 from khux_medal_finder.reddit import RedditService
 
 
-class TestRedditService(unittest.TestCase):
+class TestRedditServiceInitialization(unittest.TestCase):
 
     def setUp(self):
         self.ENV_MOCK = {
@@ -82,14 +82,11 @@ class TestRedditService(unittest.TestCase):
                 reddit = RedditService()
                 self.assertFalse(reddit.valid)
 
-    def test_subreddit_uses_subreddit_name(self):
-        pass
+    def tearDown(self):
+        self.env_patcher.stop()
 
-    def test_last_subreddit_comments_uses_subreddit_name(self):
-        pass
 
-    def test_last_subreddit_comments_uses_amount(self):
-        pass
+class TestRedditService(unittest.TestCase):
 
     def test_reply_if_there_arent_medals_responds_with_the_correct_text(self):
         pass
@@ -115,5 +112,3 @@ class TestRedditService(unittest.TestCase):
     def test_reply_if_there_is_an_error_commenting_doesnt_create_reply_object(self):
         pass
 
-    def tearDown(self):
-        self.env_patcher.stop()
