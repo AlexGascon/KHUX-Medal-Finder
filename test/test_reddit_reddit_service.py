@@ -6,6 +6,7 @@ import peewee
 from unittest import mock
 from datetime import datetime
 
+from khux_medal_finder import helpers
 from khux_medal_finder.models import Comment, Reply
 from khux_medal_finder.reddit import RedditService
 
@@ -163,17 +164,64 @@ class TestRedditService(unittest.TestCase):
         self.assertEqual(obtained_reply.url, 'https://medium.com/alexgascon')
 
     def test_reply_if_there_are_medals_responds_with_the_correct_text(self):
-        pass
+        self.mock_comment.reply.return_value = self.mock_reply
+        mock_medal = mock.Mock()
+        helper_reply = "Mocked response"
+        bot_presentation_text = "\n\nBeeep bop. I'm a bot! I've been created by Pawah and you can find my code on Github"
+
+        with mock.patch('khux_medal_finder.helpers.prepare_reply_body', return_value=helper_reply):
+            self.reddit.reply(self.mock_comment, [mock_medal])
+
+        self.mock_comment.reply.assert_called_once_with(helper_reply + bot_presentation_text)
 
     def test_reply_if_there_are_medals_creates_comment_object_with_the_correct_attributes(self):
-        pass
+        self.mock_comment.reply.return_value = self.mock_reply
+        self.mock_comment.reply.return_value = self.mock_reply
+        mock_medal = mock.Mock()
+
+        self.reddit.reply(self.mock_comment, [mock_medal])
+        last_comment = Comment.select().order_by(-Comment.id).get()
+
+        self.assertEqual(last_comment.author, 'Francisco Umbral')
+        self.assertEqual(last_comment.comment_id, 'abcdex')
+        self.assertEqual(last_comment.text, 'Yo he venido aqui a hablar de mi libro')
+        self.assertEqual(last_comment.timestamp, datetime.fromtimestamp(1))
+        self.assertEqual(last_comment.url, 'https://yo.hevenidoaquiahablardemi.libro/comentario/11234/')
 
     def test_reply_if_there_are_medals_creates_reply_object_with_the_correct_attributes(self):
-        pass
+        self.mock_comment.reply.return_value = self.mock_reply
+        self.mock_comment.reply.return_value = self.mock_reply
+        mock_medal = mock.Mock()
+        helper_reply = "Mocked response"
+        bot_presentation_text = "\n\nBeeep bop. I'm a bot! I've been created by Pawah and you can find my code on Github"
+
+        with mock.patch('khux_medal_finder.helpers.prepare_reply_body', return_value=helper_reply):
+            self.reddit.reply(self.mock_comment, [mock_medal])
+        obtained_reply = Reply.select().order_by(-Reply.id).get()
+        last_comment = Comment.select().order_by(-Comment.id).get()
+
+        self.assertTrue(obtained_reply.success)
+        self.assertEqual(obtained_reply.original_comment, last_comment)
+        self.assertEqual(obtained_reply.author, 'khux_medal_finder')
+        self.assertEqual(obtained_reply.comment_id, 'xedcba')
+        self.assertEqual(obtained_reply.text, helper_reply + bot_presentation_text)
+        self.assertEqual(obtained_reply.timestamp, datetime.fromtimestamp(2))
+        self.assertEqual(obtained_reply.url, 'https://medium.com/alexgascon')
 
     def test_reply_if_there_is_an_error_commenting_doesnt_create_comment_object(self):
-        pass
+        self.mock_comment.reply.side_effect = Exception("Network Error")
+
+        with self.assertRaises(Exception):
+            self.reddit.reply(self.mock_comment, [])
+
+        comments_amount = Comment.select().order_by(-Comment.id).count()
+        self.assertEqual(comments_amount, 0)
 
     def test_reply_if_there_is_an_error_commenting_doesnt_create_reply_object(self):
-        pass
+        self.mock_comment.reply.side_effect = Exception("Network Error")
 
+        with self.assertRaises(Exception):
+            self.reddit.reply(self.mock_comment, [])
+
+        replies_amount = Reply.select().order_by(-Reply.id).count()
+        self.assertEqual(replies_amount, 0)
