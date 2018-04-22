@@ -2,8 +2,13 @@ import os
 import praw
 import prawcore
 
+from khux_medal_finder import helpers
+from khux_medal_finder.models import Comment, Reply
+
 
 class RedditService:
+    REPLY_BOT_DESCRIPTION = "\n\nBeeep bop. I'm a bot! I've been created by Pawah and you can find my code on Github"
+    REPLY_NO_MEDALS = "I'm sorry, I couldn't find any medal that match your requirements." + REPLY_BOT_DESCRIPTION
 
     def __init__(self):
         self.reddit = praw.Reddit(user_agent='Medal finder bot by /u/Pawah/',
@@ -41,3 +46,24 @@ class RedditService:
 
     def subreddit(self, subreddit_name):
         return self.reddit.subreddit(subreddit_name)
+
+    def last_subreddit_comments(self, subreddit_name, amount=1000):
+        subreddit = self.reddit.subreddit(subreddit_name)
+        return subreddit.comments(limit=amount)
+
+    def reply(self, comment, medals):
+        if medals:
+            success = True
+            reply_body = helpers.prepare_reply_body(medals) + self.REPLY_BOT_DESCRIPTION
+        else:
+            success = False
+            reply_body = self.REPLY_NO_MEDALS
+
+        reply = comment.reply(reply_body)
+
+        comment_object = Comment.create(author=comment.author, comment_id=comment.id, text=comment.body,
+                                        timestamp=comment.created, url=comment.permalink)
+        reply_object = Reply.create(original_comment=comment_object, success=success, comment_id=reply.id,
+                                    text=reply_body, timestamp=reply.created, url=reply.permalink)
+
+        return reply_object
