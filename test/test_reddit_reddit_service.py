@@ -127,6 +127,11 @@ class TestRedditService(unittest.TestCase):
 
         self.env_patcher.stop()
 
+    def test_last_subreddit_comments_gets_correct_amount_of_comments(self):
+        with mock.patch('praw.models.Subreddit.comments', autospec=True) as mocked_subreddit_comments:
+            self.reddit.last_subreddit_comments('test', amount=1000)
+            mocked_subreddit_comments.assert_called_once_with(limit=1000)
+
     def test_reply_if_there_arent_medals_responds_with_the_correct_text(self):
         self.mock_comment.reply.return_value = self.mock_reply
         expected_reply_body = "I'm sorry, I couldn't find any medal that match your requirements." + "\n\nBeeep bop. I'm a bot! I've been created by Pawah and you can find my code on Github"
