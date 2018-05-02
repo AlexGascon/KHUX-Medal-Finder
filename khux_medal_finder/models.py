@@ -20,8 +20,8 @@ class Medal(BaseModel):
     direction = CharField()
     element = CharField()
     hits = IntegerField()
-    id = IntegerField(primary_key=True)
     image_link = TextField()
+    medal_id = IntegerField(primary_key=True)
     multiplier_min = FloatField()
     multiplier_max = FloatField()
     name = TextField()
@@ -64,7 +64,7 @@ class MedalFactory:
             created_medal.direction = medal_json['direction']
             created_medal.element = medal_json['element']
             created_medal.hits = medal_json['hits']
-            created_medal.id = medal_json['id']
+            created_medal.medal_id = medal_json['id']
             created_medal.multiplier_min, created_medal.multiplier_max = cls.parse_multiplier(medal_json['multiplier'])
             created_medal.name = medal_json['name']
             created_medal.rarity = medal_json['rarity']
