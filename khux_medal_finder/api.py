@@ -70,7 +70,7 @@ class Scrapper:
         medals_dict = response.json()['medal']
         medals = []
         for _, medal in medals_dict.items():
-            medals.append(medal)#MedalFactory.medal(medal))
+            medals.append(medal)
 
         return medals
 
