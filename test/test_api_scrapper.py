@@ -63,7 +63,7 @@ class TestScrapper(unittest.TestCase):
             self.requests_mock.get(medal_with_symbol_in_name_endpoint_3, json=medal_with_symbol_in_name_response_3)
 
     def test_get_medals_when_one_medal_exists(self):
-        expected_medals = [MedalFactory.medal({"cost": 7, "defence": 5645, "direction": "Upright", "element": "Power", "hits": 3,  "id": 1051, "image_link": "/static/medal_images//Illustrated_Halloween_Goofy_6.png", "multiplier": "x4.13", "name": "Illustrated Halloween Goofy", "notes": "Restores 3 guates", "pullable": "No", "rarity": 6, "region": "na", "strength": 5759, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None})]
+        expected_medals = [{"cost": 7, "defence": 5645, "direction": "Upright", "element": "Power", "hits": 3,  "id": 1051, "image_link": "/static/medal_images//Illustrated_Halloween_Goofy_6.png", "multiplier": "x4.13", "name": "Illustrated Halloween Goofy", "notes": "Restores 3 guates", "pullable": "No", "rarity": 6, "region": "na", "strength": 5759, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}]
 
         with self.requests_mock:
             medals = self.scrapper.get_medals('illustrated halloween goofy')
@@ -72,8 +72,8 @@ class TestScrapper(unittest.TestCase):
 
     def test_get_medals_when_several_medals_exist(self):
         expected_medals = [
-            MedalFactory.medal({"cost": 1, "defence": 4274, "direction": "Reversed", "element": "Power", "hits": 6, "id": 986, "image_link": "/static/medal_images//Axel_B_5.png", "multiplier": "x1.72-3.20", "name": "Axel B", "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck", "pullable": "No", "rarity": 5, "region": "na", "strength": 4377, "targets": "Random", "tier": 3, "type": "Combat", "voice_link": None}),
-            MedalFactory.medal({"cost": 1, "defence": 5512, "direction": "Reversed", "element": "Power", "hits": 6, "id": 987, "image_link": "/static/medal_images//Axel_B_6.png", "multiplier": "x1.78-3.26", "name": "Axel B", "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck", "pullable": "No", "rarity": 6, "region": "na", "strength": 5645, "targets": "Random", "tier": 3, "type": "Combat", "voice_link": None})
+            {"cost": 1, "defence": 4274, "direction": "Reversed", "element": "Power", "hits": 6, "id": 986, "image_link": "/static/medal_images//Axel_B_5.png", "multiplier": "x1.72-3.20", "name": "Axel B", "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck", "pullable": "No", "rarity": 5, "region": "na", "strength": 4377, "targets": "Random", "tier": 3, "type": "Combat", "voice_link": None},
+            {"cost": 1, "defence": 5512, "direction": "Reversed", "element": "Power", "hits": 6, "id": 987, "image_link": "/static/medal_images//Axel_B_6.png", "multiplier": "x1.78-3.26", "name": "Axel B", "notes": "Increases your power attack by three steps for one turn; deals more damage the further forward it's set in your deck", "pullable": "No", "rarity": 6, "region": "na", "strength": 5645, "targets": "Random", "tier": 3, "type": "Combat", "voice_link": None}
         ]
 
         with self.requests_mock:
@@ -88,9 +88,9 @@ class TestScrapper(unittest.TestCase):
         self.assertCountEqual(medals, [])
 
     def test_get_medals_when_there_are_symbols_in_query(self):
-        expected_medals_1 = [MedalFactory.medal({"cost": 2, "defence": 5618, "direction": "Upright", "element": "Speed", "hits": 13, "id": 862, "image_link": "/static/medal_images//KH_02_Terra_and_Ventus_6.png", "multiplier": "x3.40", "name": "KH0.2 Terra & Ventus", "notes": "Raises your power and speed attack by two steps for two turns; deals large damage", "pullable": "No", "rarity": 6, "region": "na", "strength": 5696, "targets": "Single", "tier": 5, "type": "Combat", "voice_link": None})]
-        expected_medals_2 = [MedalFactory.medal({"cost": 2, "defence": 5590, "direction": "Reversed", "element": "Speed", "hits": 5, "id": 637, "image_link": "/static/medal_images//Key_Art_3_6.png", "multiplier": "x1.38-2.72", "name": "Key Art #3", "notes": "Decreases enemy defense by one stage for the remainder of the turn; deals more damage the greater your HP", "pullable": "Yes", "rarity": 6, "region": "na", "strength": 5677, "targets": "All", "tier": 5, "type": "Combat", "voice_link": None})]
-        expected_medals_3 = [MedalFactory.medal({"cost": 1, "defence": 5861, "direction": "Upright", "element": "Magic", "hits": 4, "id": 1014, "image_link": "/static/medal_images//HD_Invi_EX_6.png", "multiplier": "x3.12-4.32", "name": "HD Invi [EX]", "notes": "Increases your magic attack by seven steps, decreases enemy general defense by two steps and enemy magic defense by seven steps for two turns; deals more damage when only one enemy in the group remains or all raid parts have been destroyed; doesn't affect enemy counters", "pullable": "No", "rarity": 6, "region": "na", "strength": 6030, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None})]
+        expected_medals_1 = [{"cost": 2, "defence": 5618, "direction": "Upright", "element": "Speed", "hits": 13, "id": 862, "image_link": "/static/medal_images//KH_02_Terra_and_Ventus_6.png", "multiplier": "x3.40", "name": "KH0.2 Terra & Ventus", "notes": "Raises your power and speed attack by two steps for two turns; deals large damage", "pullable": "No", "rarity": 6, "region": "na", "strength": 5696, "targets": "Single", "tier": 5, "type": "Combat", "voice_link": None}]
+        expected_medals_2 = [{"cost": 2, "defence": 5590, "direction": "Reversed", "element": "Speed", "hits": 5, "id": 637, "image_link": "/static/medal_images//Key_Art_3_6.png", "multiplier": "x1.38-2.72", "name": "Key Art #3", "notes": "Decreases enemy defense by one stage for the remainder of the turn; deals more damage the greater your HP", "pullable": "Yes", "rarity": 6, "region": "na", "strength": 5677, "targets": "All", "tier": 5, "type": "Combat", "voice_link": None}]
+        expected_medals_3 = [{"cost": 1, "defence": 5861, "direction": "Upright", "element": "Magic", "hits": 4, "id": 1014, "image_link": "/static/medal_images//HD_Invi_EX_6.png", "multiplier": "x3.12-4.32", "name": "HD Invi [EX]", "notes": "Increases your magic attack by seven steps, decreases enemy general defense by two steps and enemy magic defense by seven steps for two turns; deals more damage when only one enemy in the group remains or all raid parts have been destroyed; doesn't affect enemy counters", "pullable": "No", "rarity": 6, "region": "na", "strength": 6030, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}]
 
         with self.requests_mock:
             medals_1 = self.scrapper.get_medals('KH0.2 Terra & Ventus')
@@ -156,16 +156,3 @@ class TestScrapper(unittest.TestCase):
 
         self.assertTrue(success)
 
-    @patch.object(Medal, 'save', create=True)
-    @patch.object(Medal, 'get_or_none', return_value=False)
-    @patch.object(Scrapper, 'missing_medals')
-    def test_scrape_missing_medals_when_problem_in_DB(self, mock_missing_medals, mock_get_or_none, mock_medal_save):
-        mock_missing_medals.return_value = ['hd invi [ex]']
-        mock_medal_save.return_value = 1
-        invi_medal = {"cost": 1, "defence": 5861, "direction": "Upright", "element": "Magic", "hits": 4, "id": 1014, "image_link": "/static/medal_images//HD_Invi_EX_6.png", "multiplier": "x3.12-4.32", "name": "HD Invi [EX]", "notes": "Increases your magic attack by seven steps, decreases enemy general defense by two steps and enemy magic defense by seven steps for two turns; deals more damage when only one enemy in the group remains or all raid parts have been destroyed; doesn't affect enemy counters", "pullable": "No", "rarity": 6, "region": "na", "strength": 6030, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}
-
-        with self.requests_mock:
-            success = self.scrapper.scrape_missing_medals()
-
-        self.assertFalse(success)
-        mock_medal_save.assert_called()
