@@ -18,6 +18,8 @@ coverage = "*"
 praw = "*"
 requests = "*"
 peewee = "*"
+"psycopg2" = "*"
+python-dotenv = "*"
 
 
 [requires]
