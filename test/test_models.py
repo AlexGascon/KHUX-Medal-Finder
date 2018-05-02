@@ -44,7 +44,7 @@ class TestModels(BaseDBTestCase):
     """Medal model"""
     def test_medal_model_has_correct_fields(self):
         expected_fields = ['cost', 'defence', 'direction', 'element', 'hits',
-                           'id', 'image_link', 'multiplier_min', 'multiplier_max',
+                           'medal_id', 'image_link', 'multiplier_min', 'multiplier_max',
                            'name', 'notes', 'pullable', 'rarity', 'region',
                            'strength', 'targets', 'tier', 'type', 'voice_link']
         self.assertCountEqual(Medal._meta.sorted_field_names, expected_fields)
@@ -56,8 +56,8 @@ class TestModels(BaseDBTestCase):
         self.assertIsInstance(fields['direction'], peewee.CharField)
         self.assertIsInstance(fields['element'], peewee.CharField)
         self.assertIsInstance(fields['hits'], peewee.IntegerField)
-        self.assertIsInstance(fields['id'], peewee.IntegerField)
         self.assertIsInstance(fields['image_link'], peewee.TextField)
+        self.assertIsInstance(fields['medal_id'], peewee.IntegerField)
         self.assertIsInstance(fields['multiplier_min'], peewee.FloatField)
         self.assertIsInstance(fields['multiplier_max'], peewee.FloatField)
         self.assertIsInstance(fields['name'], peewee.TextField)
@@ -101,7 +101,7 @@ class TestMedalFactory(BaseDBTestCase):
         self.assertIsNone(MedalFactory.medal(self.non_combat_medal_json))
 
     def test_sets_fields_correctly_in_medal(self):
-        self.assertEqual(self.combat_medal.id, 862)
+        self.assertEqual(self.combat_medal.medal_id, 862)
         self.assertEqual(self.combat_medal.cost, 2)
         self.assertEqual(self.combat_medal.defence, 5618)
         self.assertEqual(self.combat_medal.direction, "Upright")
