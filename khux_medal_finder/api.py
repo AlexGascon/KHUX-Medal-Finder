@@ -70,7 +70,7 @@ class Scrapper:
         medals_dict = response.json()['medal']
         medals = []
         for _, medal in medals_dict.items():
-            medals.append(MedalFactory.medal(medal))
+            medals.append(medal)#MedalFactory.medal(medal))
 
         return medals
 
@@ -92,7 +92,8 @@ class Scrapper:
                 matching_medals = self.get_medals(medal_name)
 
                 for medal in matching_medals:
-                    if not Medal.get_or_none(Medal.id == medal.id):
+                    if not Medal.get_or_none(Medal.id == medal['id']):
+                        print(f"Creating medal {medal['name'] - medal['rarity']}")
                         success = (MedalFactory.medal(medal) and success)
 
         except Exception as e:
