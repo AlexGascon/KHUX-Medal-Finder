@@ -1,2 +1,4 @@
 [run]
-omit = test/*
+omit =
+    khux_medal_finder/tasks/*
+    test/*
