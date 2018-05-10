@@ -92,4 +92,4 @@ class Scrapper:
             for medal in matching_medals:
                 if not Medal.get_or_none(Medal.medal_id == medal['id']):
                     print(f"Creating medal {medal['name'] - medal['rarity']}")
-                    success = (MedalFactory.medal(medal) and success)
+                    MedalFactory.medal(medal)
