@@ -5,7 +5,8 @@ db = PostgresqlDatabase(database=os.environ['DB_DATABASE'],
                         user=os.environ['DB_USERNAME'],
                         password=os.environ['DB_PASSWORD'],
                         host=os.environ['DB_HOST'],
-                        port=os.environ['DB_PORT'])
+                        port=os.environ['DB_PORT'],
+                        autorollback=True)
 
 
 class BaseModel(Model):
@@ -16,24 +17,24 @@ class BaseModel(Model):
 
 class Medal(BaseModel):
     cost = IntegerField()
-    defence = IntegerField()
+    defence = IntegerField(null=True)
     direction = CharField()
     element = CharField()
     hits = IntegerField()
-    image_link = TextField()
-    medal_id = IntegerField(primary_key=True)
+    image_link = TextField(null=True)
+    medal_id = IntegerField(primary_key=True, index=True)
     multiplier_min = FloatField()
     multiplier_max = FloatField()
-    name = TextField()
-    notes = TextField()
-    pullable = CharField(max_length=3)
-    rarity = IntegerField()
-    region = CharField(max_length=5)
-    strength = IntegerField()
+    name = TextField(index=True)
+    notes = TextField(null=True)
+    pullable = CharField(max_length=3, null=True)
+    rarity = IntegerField(null=True)
+    region = CharField(max_length=5, null=True)
+    strength = IntegerField(null=True)
     targets = CharField(max_length=10)
     tier = IntegerField()
     type = CharField(max_length=10)
-    voice_link = TextField()
+    voice_link = TextField(null=True)
 
 
 class MedalFactory:
@@ -84,7 +85,7 @@ class MedalFactory:
         created_medal.strength = medal_json.get('strength', None)
         created_medal.voice_link = medal_json.get('voice_link', None)
 
-        created_medal.save()
+        created_medal.save(force_insert=True)
 
         return created_medal
 
