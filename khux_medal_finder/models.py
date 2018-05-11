@@ -5,7 +5,8 @@ db = PostgresqlDatabase(database=os.environ['DB_DATABASE'],
                         user=os.environ['DB_USERNAME'],
                         password=os.environ['DB_PASSWORD'],
                         host=os.environ['DB_HOST'],
-                        port=os.environ['DB_PORT'])
+                        port=os.environ['DB_PORT'],
+                        autorollback=True)
 
 
 class BaseModel(Model):
