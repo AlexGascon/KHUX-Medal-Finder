@@ -85,7 +85,7 @@ class MedalFactory:
         created_medal.strength = medal_json.get('strength', None)
         created_medal.voice_link = medal_json.get('voice_link', None)
 
-        created_medal.save()
+        created_medal.save(force_insert=True)
 
         return created_medal
 
