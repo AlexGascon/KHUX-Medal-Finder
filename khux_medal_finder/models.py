@@ -5,7 +5,8 @@ db = PostgresqlDatabase(database=os.environ['DB_DATABASE'],
                         user=os.environ['DB_USERNAME'],
                         password=os.environ['DB_PASSWORD'],
                         host=os.environ['DB_HOST'],
-                        port=os.environ['DB_PORT'])
+                        port=os.environ['DB_PORT'],
+                        autorollback=True)
 
 
 class BaseModel(Model):
@@ -21,7 +22,7 @@ class Medal(BaseModel):
     element = CharField()
     hits = IntegerField()
     image_link = TextField(null=True)
-    medal_id = IntegerField(primary_key=True)
+    medal_id = IntegerField(primary_key=True, index=True)
     multiplier_min = FloatField()
     multiplier_max = FloatField()
     name = TextField(index=True)
@@ -84,7 +85,7 @@ class MedalFactory:
         created_medal.strength = medal_json.get('strength', None)
         created_medal.voice_link = medal_json.get('voice_link', None)
 
-        created_medal.save()
+        created_medal.save(force_insert=True)
 
         return created_medal
 
