@@ -17,24 +17,24 @@ class BaseModel(Model):
 
 class Medal(BaseModel):
     cost = IntegerField()
-    defence = IntegerField()
+    defence = IntegerField(null=True)
     direction = CharField()
     element = CharField()
     hits = IntegerField()
-    image_link = TextField()
+    image_link = TextField(null=True)
     medal_id = IntegerField(primary_key=True)
     multiplier_min = FloatField()
     multiplier_max = FloatField()
     name = TextField()
-    notes = TextField()
-    pullable = CharField(max_length=3)
-    rarity = IntegerField()
-    region = CharField(max_length=5)
-    strength = IntegerField()
+    notes = TextField(null=True)
+    pullable = CharField(max_length=3, null=True)
+    rarity = IntegerField(null=True)
+    region = CharField(max_length=5, null=True)
+    strength = IntegerField(null=True)
     targets = CharField(max_length=10)
     tier = IntegerField()
     type = CharField(max_length=10)
-    voice_link = TextField()
+    voice_link = TextField(null=True)
 
 
 class MedalFactory:
