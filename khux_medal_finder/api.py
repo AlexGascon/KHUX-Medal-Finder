@@ -83,13 +83,13 @@ class Scrapper:
 
     def scrape_missing_medals(self):
         """Saves in the DB the medals that aren't there yet"""
-        missing_medals = self.missing_medals()
-        print(f'Missing medals:\n {missing_medals}')
+        missing_medals_names = self.missing_medals()
+        print(f'Missing medals:\n {missing_medals_names}')
 
-        for medal_name in missing_medals:
+        for medal_name in missing_medals_names:
             matching_medals = self.get_medals(medal_name)
 
             for medal in matching_medals:
                 if not Medal.get_or_none(Medal.medal_id == medal['id']):
-                    print(f"Creating medal {medal['name'] - medal['rarity']}")
+                    print(f"Creating medal {medal['name']} - {medal['rarity']}")
                     MedalFactory.medal(medal)
