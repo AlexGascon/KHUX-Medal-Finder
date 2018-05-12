@@ -1,5 +1,6 @@
 import os
 from peewee import *
+from khux_medal_finder.exceptions import ParseMultiplierError
 
 db = PostgresqlDatabase(database=os.environ['DB_DATABASE'],
                         user=os.environ['DB_USERNAME'],
@@ -41,15 +42,19 @@ class MedalFactory:
 
     @classmethod
     def parse_multiplier(cls, multiplier_string):
-        multipliers = multiplier_string.split('-')
-        # Removing the 'x' from the string. It appears no matter if the
-        # multiplier was ranged or single, so have to do it in both cases
-        multipliers[0] = multipliers[0][1:]
+        try:
+            multipliers = multiplier_string.split('-')
 
-        if len(multipliers) > 1:
-            return [float(num) for num in multipliers]
-        else:
-            return [float(*multipliers)]*2
+            if multipliers[0].startswith('x'):
+                multipliers[0] = multipliers[0][1:]
+
+            if len(multipliers) == 1:
+                multipliers = [multipliers[0]] * 2
+
+            return list(map(float, multipliers))
+
+        except Exception:
+            raise ParseMultiplierError(f"The value {multiplier_string} couldn't be parsed")
 
     @classmethod
     def medal(cls, medal_json):
