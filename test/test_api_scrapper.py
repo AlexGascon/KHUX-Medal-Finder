@@ -151,8 +151,8 @@ class TestScrapper(unittest.TestCase):
     def test_scrape_missing_medals_when_medals_are_in_DB(self, mock_missing_medals, mock_get_or_none):
         mock_missing_medals.return_value = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
 
-        with self.requests_mock:
-            success = self.scrapper.scrape_missing_medals()
+        with patch.object(MedalFactory, 'medal') as mocked_medalfactory:
+            with self.requests_mock:
+                self.scrapper.scrape_missing_medals()
 
-        self.assertTrue(success)
-
+            mocked_medalfactory.assert_not_called()
