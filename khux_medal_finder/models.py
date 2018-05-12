@@ -78,7 +78,9 @@ class MedalFactory:
             created_medal.tier = medal_json['tier']
             created_medal.type = medal_json['type']
 
-        except KeyError:
+        except (KeyError, ParseMultiplierError) as e:
+            print(f"There has been an error while trying to create the medal: {e}")
+            print(medal_json)
             return None
         
         created_medal.defence = medal_json.get('defence', None)

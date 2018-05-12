@@ -127,6 +127,31 @@ class TestMedalFactory(BaseDBTestCase):
         self.assertEqual(self.combat_medal_ranged_multiplier.multiplier_min, 2.61)
         self.assertEqual(self.combat_medal_ranged_multiplier.multiplier_max, 3.85)
 
+    def test_parses_multiplier_correctly_if_doesnt_start_with_x(self):
+        combat_medal_json_without_x = self.combat_medal_json.copy()
+        combat_medal_json_without_x['multiplier'] = "3.29-7.12"
+
+        created_medal = MedalFactory.medal(combat_medal_json_without_x)
+
+        self.assertEqual(created_medal.multiplier_min, 3.29)
+        self.assertEqual(created_medal.multiplier_max, 7.12)
+
+    def test_medal_is_not_created_if_multiplier_is_None(self):
+        combat_medal_json_faulty = self.combat_medal_json.copy()
+        combat_medal_json_faulty['multiplier'] = None
+
+        created_medal = MedalFactory.medal(combat_medal_json_faulty)
+
+        self.assertIsNone(created_medal)
+
+    def test_medal_is_not_created_if_multiplier_doesnt_have_correct_separator(self):
+        combat_medal_json_faulty = self.combat_medal_json.copy()
+        combat_medal_json_faulty['multiplier'] = "x3.29~7.12"
+
+        created_medal = MedalFactory.medal(combat_medal_json_faulty)
+
+        self.assertIsNone(created_medal)
+
     def test_doesnt_create_medal_if_the_json_contains_an_error(self):
         json_with_error = {"error": "Error message to use in this test"}
         self.assertIsNone(MedalFactory.medal(json_with_error))
