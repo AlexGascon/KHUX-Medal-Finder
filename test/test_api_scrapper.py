@@ -136,15 +136,19 @@ class TestScrapper(unittest.TestCase):
         self.assertCountEqual(missing_medals, [])
         mock_select.assert_called_once()
 
-    @patch.object(Medal, 'get_or_none', return_value=True)
+    @patch.object(Medal, 'get_or_none', return_value=None)
     @patch.object(Scrapper, 'missing_medals')
     def test_scrape_missing_medals_when_medals_are_not_in_DB(self, mock_missing_medals, mock_get_or_none):
-        mock_missing_medals.return_value = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
+        missing_medals = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
+        mock_missing_medals.return_value = missing_medals
 
-        with self.requests_mock:
-            success = self.scrapper.scrape_missing_medals()
+        with patch.object(MedalFactory, 'medal') as mocked_medalfactory:
+            with self.requests_mock:
+                self.scrapper.scrape_missing_medals()
 
-        self.assertTrue(success)
+            # Despite there are only 3 medals in missing_medals, the method is
+            # called 4 times because Axel B has two versions: 5 and 6 stars.
+            self.assertEqual(mocked_medalfactory.call_count, 4)
 
     @patch.object(Medal, 'get_or_none', return_value=True)
     @patch.object(Scrapper, 'missing_medals')
