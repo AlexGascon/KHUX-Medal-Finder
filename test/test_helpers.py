@@ -2,7 +2,8 @@ import json
 import unittest
 import peewee
 
-from khux_medal_finder.models import MedalFactory, Medal
+from khux_medal_finder.models import Medal
+from khux_medal_finder.factories import MedalFactory
 from khux_medal_finder.helpers import prepare_reply_body, prepare_multiplier_string
 
 test_db = peewee.SqliteDatabase(':memory:')

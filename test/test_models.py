@@ -3,7 +3,8 @@ import json
 import peewee
 from unittest.mock import patch
 
-from khux_medal_finder.models import BaseModel, Medal, MedalFactory
+from khux_medal_finder.models import BaseModel, Medal
+from khux_medal_finder.factories import MedalFactory
 
 test_db = peewee.SqliteDatabase(':memory:')
 MODELS = [BaseModel, Medal]

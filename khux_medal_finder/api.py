@@ -1,7 +1,9 @@
 import requests
 from urllib.parse import urlencode
 
-from khux_medal_finder.models import Medal, MedalFactory
+from khux_medal_finder.models import Medal
+from khux_medal_finder.factories import MedalFactory
+
 
 class Search:
 
