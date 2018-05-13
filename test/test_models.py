@@ -136,17 +136,19 @@ class TestMedalFactory(BaseDBTestCase):
         self.assertEqual(created_medal.multiplier_min, 3.29)
         self.assertEqual(created_medal.multiplier_max, 7.12)
 
+    def test_medal_is_created_correctly_if_multiplier_has_curved_separator(self):
+
+        combat_medal_json_curved = self.combat_medal_json.copy()
+        combat_medal_json_curved['multiplier'] = "x3.29~7.12"
+
+        created_medal = MedalFactory.medal(combat_medal_json_curved)
+
+        self.assertEqual(created_medal.multiplier_min, 3.29)
+        self.assertEqual(created_medal.multiplier_max, 7.12)
+
     def test_medal_is_not_created_if_multiplier_is_None(self):
         combat_medal_json_faulty = self.combat_medal_json.copy()
         combat_medal_json_faulty['multiplier'] = None
-
-        created_medal = MedalFactory.medal(combat_medal_json_faulty)
-
-        self.assertIsNone(created_medal)
-
-    def test_medal_is_not_created_if_multiplier_doesnt_have_correct_separator(self):
-        combat_medal_json_faulty = self.combat_medal_json.copy()
-        combat_medal_json_faulty['multiplier'] = "x3.29~7.12"
 
         created_medal = MedalFactory.medal(combat_medal_json_faulty)
 
