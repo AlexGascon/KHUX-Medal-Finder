@@ -25,15 +25,3 @@ def prepare_multiplier(medal):
         return f'x{medal.multiplier_max}'
     else:
         return f'x{medal.multiplier_min} - {medal.multiplier_max}'
-
-def prepare_multiplier_string(input_multiplier_string):
-    processed_multiplier_string = input_multiplier_string.strip()
-
-    if processed_multiplier_string.lower().startswith('x'):
-        processed_multiplier_string = processed_multiplier_string[1:]
-
-    import ipdb; ipdb.set_trace()
-    if '~' in processed_multiplier_string:
-        processed_multiplier_string = processed_multiplier_string.replace('~', '-')
-
-    return processed_multiplier_string

@@ -3,7 +3,7 @@ import unittest
 import peewee
 
 from khux_medal_finder.models import MedalFactory, Medal
-from khux_medal_finder.helpers import prepare_reply_body, prepare_multiplier_string
+from khux_medal_finder.helpers import prepare_reply_body
 
 test_db = peewee.SqliteDatabase(':memory:')
 class TestPrepareReplyBody(unittest.TestCase):
@@ -66,28 +66,3 @@ class TestPrepareReplyBody(unittest.TestCase):
 
         self.assertEqual(obtained_table, expected_table)
 
-class TestPrepareMultiplierString(unittest.TestCase):
-
-    def test_returns_correct_result_if_the_string_is_already_valid(self):
-        input_string = '3.97-7.12'
-        self.assertEqual(input_string, prepare_multiplier_string(input_string))
-
-    def test_returns_correct_result_if_the_string_has_leading_and_trailing_whitespaces(self):
-        input_string = '       3.97-7.12      '
-        self.assertEqual('3.97-7.12', prepare_multiplier_string(input_string))
-
-    def test_returns_correct_result_if_the_string_has_curved_separator(self):
-        input_string = '3.97~7.12'
-        self.assertEqual('3.97-7.12', prepare_multiplier_string(input_string))
-
-    def test_returns_correct_result_if_the_string_starts_with_x(self):
-        input_string = 'x3.97-7.12'
-        self.assertEqual('3.97-7.12', prepare_multiplier_string(input_string))
-
-    def test_returns_correct_result_when_there_are_whitespaces_x_and_curved_separator(self):
-        input_string = '    x3.97~7.12          '
-        self.assertEqual('3.97-7.12', prepare_multiplier_string(input_string))
-
-    def test_raises_an_exception_if_string_is_none(self):
-        with self.assertRaises(Exception):
-            prepare_multiplier_string(None)
