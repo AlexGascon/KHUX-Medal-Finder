@@ -144,14 +144,6 @@ class TestMedalFactory(BaseDBTestCase):
 
         self.assertIsNone(created_medal)
 
-    def test_medal_is_not_created_if_multiplier_doesnt_have_correct_separator(self):
-        combat_medal_json_faulty = self.combat_medal_json.copy()
-        combat_medal_json_faulty['multiplier'] = "x3.29~7.12"
-
-        created_medal = MedalFactory.medal(combat_medal_json_faulty)
-
-        self.assertIsNone(created_medal)
-
     def test_doesnt_create_medal_if_the_json_contains_an_error(self):
         json_with_error = {"error": "Error message to use in this test"}
         self.assertIsNone(MedalFactory.medal(json_with_error))
