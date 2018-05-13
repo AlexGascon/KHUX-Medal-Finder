@@ -4,7 +4,8 @@ import requests_mock
 from unittest.mock import patch
 
 from khux_medal_finder.api import Scrapper
-from khux_medal_finder.models import Medal, MedalFactory
+from khux_medal_finder.models import Medal
+from khux_medal_finder.factories import MedalFactory
 
 
 class TestScrapper(unittest.TestCase):
