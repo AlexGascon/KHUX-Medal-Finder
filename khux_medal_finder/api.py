@@ -90,8 +90,13 @@ class Scrapper:
 
         for medal_name in missing_medals_names:
             matching_medals = self.get_medals(medal_name)
+            print(f"Current medal: {medal_name}")
 
             for medal in matching_medals:
                 if not Medal.get_or_none(Medal.medal_id == medal['id']):
-                    print(f"Creating medal {medal['name']} - {medal['rarity']}")
-                    MedalFactory.medal(medal)
+                    created_medal = MedalFactory.medal(medal)
+
+                    if created_medal:
+                        print(f"{created_medal['name']} - {created_medal['rarity']}* was correctly created")
+                    else:
+                        print(f"Couldn't create medal {medal['name']} - {medal['rarity']}*")
