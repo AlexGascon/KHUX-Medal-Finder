@@ -97,6 +97,6 @@ class Scrapper:
                     created_medal = MedalFactory.medal(medal)
 
                     if created_medal:
-                        print(f"{created_medal['name']} - {created_medal['rarity']}* was correctly created")
+                        print(f"{created_medal.name} - {created_medal.rarity}* was correctly created")
                     else:
                         print(f"Couldn't create medal {medal['name']} - {medal['rarity']}*")
