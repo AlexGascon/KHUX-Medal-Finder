@@ -1,5 +1,7 @@
 import os
 from peewee import *
+
+from khux_medal_finder import helpers
 from khux_medal_finder.exceptions import ParseMultiplierError
 
 db = PostgresqlDatabase(database=os.environ['DB_DATABASE'],
@@ -43,10 +45,8 @@ class MedalFactory:
     @classmethod
     def parse_multiplier(cls, multiplier_string):
         try:
-            multipliers = multiplier_string.split('-')
-
-            if multipliers[0].startswith('x'):
-                multipliers[0] = multipliers[0][1:]
+            processed_multiplier_string = helpers.prepare_multiplier_string(multiplier_string)
+            multipliers = processed_multiplier_string.split('-')
 
             if len(multipliers) == 1:
                 multipliers = [multipliers[0]] * 2
