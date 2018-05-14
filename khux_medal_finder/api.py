@@ -78,7 +78,7 @@ class Scrapper:
 
     def missing_medals(self):
         """Gets the names of all the medals that aren't yet on the DB"""
-        current_medals = set(medal.name for medal in Medal.select())
+        current_medals = set(medal.name.lower() for medal in Medal.select())
         total_medals = set(self.get_medal_names())
 
         return list(total_medals - current_medals)
