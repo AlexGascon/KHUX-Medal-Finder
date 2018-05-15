@@ -7,14 +7,9 @@ from khux_medal_finder.api import Scrapper
 from khux_medal_finder.models import Medal
 from khux_medal_finder.factories import MedalFactory
 
+from test.helpers import BaseDBTestCase
 
-class TestScrapper(unittest.TestCase):
-
-    # We override the run method of the Test class to have a simpler way of mocking
-    # all the tests
-    def run(self, result=None):
-        with patch.object(Medal, 'save', return_value=1):
-            super(TestScrapper, self).run(result)
+class TestScrapper(BaseDBTestCase):
 
     def setUp(self):
         self.scrapper = Scrapper()
@@ -62,6 +57,8 @@ class TestScrapper(unittest.TestCase):
             with open(medal_with_symbol_in_name_fixture_file_3) as medal_with_symbol_in_name_fixture_3:
                 medal_with_symbol_in_name_response_3 = json.loads(medal_with_symbol_in_name_fixture_3.read())
             self.requests_mock.get(medal_with_symbol_in_name_endpoint_3, json=medal_with_symbol_in_name_response_3)
+
+        super(TestScrapper, self).setUp()
 
     def test_get_medals_when_one_medal_exists(self):
         expected_medals = [{"cost": 7, "defence": 5645, "direction": "Upright", "element": "Power", "hits": 3,  "id": 1051, "image_link": "/static/medal_images//Illustrated_Halloween_Goofy_6.png", "multiplier": "x4.13", "name": "Illustrated Halloween Goofy", "notes": "Restores 3 guates", "pullable": "No", "rarity": 6, "region": "na", "strength": 5759, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}]
@@ -137,6 +134,19 @@ class TestScrapper(unittest.TestCase):
         self.assertCountEqual(missing_medals, [])
         mock_select.assert_called_once()
 
+    @patch.object(Scrapper, 'get_medal_names')
+    def test_missing_medals_stop_being_missing_when_we_create_them(self, mock_get_medal_names):
+        medal_names = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
+        mock_get_medal_names.return_value = medal_names
+
+        number_of_missing_medals = len(self.scrapper.missing_medals())
+        invi_data_filename = 'test/fixtures/scrapper/medal_with_symbol_in_name_3.json'
+        with open(invi_data_filename) as invi_data_file:
+            invi_data = json.loads(invi_data_file.read())['medal']['0']
+            MedalFactory.medal(invi_data)
+
+        self.assertEqual(len(self.scrapper.missing_medals()), number_of_missing_medals - 1)
+
     @patch.object(Medal, 'get_or_none', return_value=None)
     @patch.object(Scrapper, 'missing_medals')
     def test_scrape_missing_medals_when_medals_are_not_in_DB(self, mock_missing_medals, mock_get_or_none):
@@ -161,3 +171,17 @@ class TestScrapper(unittest.TestCase):
                 self.scrapper.scrape_missing_medals()
 
             mocked_medalfactory.assert_not_called()
+
+    @patch.object(Scrapper, 'missing_medals')
+    def test_scrape_missing_medals_doesnt_stop_if_a_medal_cant_be_created(self, mock_missing_medals):
+        mock_missing_medals.return_value = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
+
+        with patch.object(MedalFactory, 'medal') as mocked_medalfactory:
+            mocked_medalfactory.return_value = None
+
+            with self.requests_mock:
+                self.scrapper.scrape_missing_medals()
+
+            # Despite there are only 3 medals in missing_medals, the method is
+            # called 4 times because Axel B has two versions: 5 and 6 stars.
+            self.assertEqual(mocked_medalfactory.call_count, 4)
