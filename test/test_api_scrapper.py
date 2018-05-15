@@ -7,6 +7,7 @@ from khux_medal_finder.api import Scrapper
 from khux_medal_finder.models import Medal
 from khux_medal_finder.factories import MedalFactory
 
+from test.helpers import BaseDBTestCase
 
 class TestScrapper(unittest.TestCase):
 
@@ -15,6 +16,7 @@ class TestScrapper(unittest.TestCase):
     def run(self, result=None):
         with patch.object(Medal, 'save', return_value=1):
             super(TestScrapper, self).run(result)
+class TestScrapper(BaseDBTestCase):
 
     def setUp(self):
         self.scrapper = Scrapper()
@@ -62,6 +64,8 @@ class TestScrapper(unittest.TestCase):
             with open(medal_with_symbol_in_name_fixture_file_3) as medal_with_symbol_in_name_fixture_3:
                 medal_with_symbol_in_name_response_3 = json.loads(medal_with_symbol_in_name_fixture_3.read())
             self.requests_mock.get(medal_with_symbol_in_name_endpoint_3, json=medal_with_symbol_in_name_response_3)
+
+        super(TestScrapper, self).setUp()
 
     def test_get_medals_when_one_medal_exists(self):
         expected_medals = [{"cost": 7, "defence": 5645, "direction": "Upright", "element": "Power", "hits": 3,  "id": 1051, "image_link": "/static/medal_images//Illustrated_Halloween_Goofy_6.png", "multiplier": "x4.13", "name": "Illustrated Halloween Goofy", "notes": "Restores 3 guates", "pullable": "No", "rarity": 6, "region": "na", "strength": 5759, "targets": "All", "tier": 7, "type": "Combat", "voice_link": None}]
