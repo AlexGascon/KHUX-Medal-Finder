@@ -171,3 +171,15 @@ class TestScrapper(BaseDBTestCase):
                 self.scrapper.scrape_missing_medals()
 
             mocked_medalfactory.assert_not_called()
+
+    @patch.object(Scrapper, 'missing_medals')
+    def test_scrape_missing_medals_doesnt_stop_if_a_medal_cant_be_created(self, mock_missing_medals):
+        mock_missing_medals.return_value = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
+
+        with patch.object(MedalFactory, 'medal') as mocked_medalfactory:
+            with self.requests_mock:
+                self.scrapper.scrape_missing_medals()
+
+            # Despite there are only 3 medals in missing_medals, the method is
+            # called 4 times because Axel B has two versions: 5 and 6 stars.
+            self.assertEqual(mocked_medalfactory.call_count, 4)
