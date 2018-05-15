@@ -9,13 +9,6 @@ from khux_medal_finder.factories import MedalFactory
 
 from test.helpers import BaseDBTestCase
 
-class TestScrapper(unittest.TestCase):
-
-    # We override the run method of the Test class to have a simpler way of mocking
-    # all the tests
-    def run(self, result=None):
-        with patch.object(Medal, 'save', return_value=1):
-            super(TestScrapper, self).run(result)
 class TestScrapper(BaseDBTestCase):
 
     def setUp(self):
