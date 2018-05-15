@@ -134,6 +134,19 @@ class TestScrapper(BaseDBTestCase):
         self.assertCountEqual(missing_medals, [])
         mock_select.assert_called_once()
 
+    @patch.object(Scrapper, 'get_medal_names')
+    def test_missing_medals_stop_being_missing_when_we_create_them(self, mock_get_medal_names):
+        medal_names = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
+        mock_get_medal_names.return_value = medal_names
+
+        number_of_missing_medals = len(self.scrapper.missing_medals())
+        invi_data_filename = 'test/fixtures/scrapper/medal_with_symbol_in_name_3.json'
+        with open(invi_data_filename) as invi_data_file:
+            invi_data = json.loads(invi_data_file.read())['medal']['0']
+            MedalFactory.medal(invi_data)
+
+        self.assertEqual(len(self.scrapper.missing_medals()), number_of_missing_medals - 1)
+
     @patch.object(Medal, 'get_or_none', return_value=None)
     @patch.object(Scrapper, 'missing_medals')
     def test_scrape_missing_medals_when_medals_are_not_in_DB(self, mock_missing_medals, mock_get_or_none):
