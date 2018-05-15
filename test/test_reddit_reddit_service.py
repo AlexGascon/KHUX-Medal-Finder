@@ -10,6 +10,8 @@ from khux_medal_finder import helpers
 from khux_medal_finder.models import Comment, Reply
 from khux_medal_finder.reddit import RedditService
 
+from test.helpers import BaseDBTestCase
+
 ENV_MOCK = {
     'REDDIT_BOT_TOKEN': "fake token",
     'REDDIT_BOT_SECRET': "fake bot secret",
@@ -88,7 +90,7 @@ class TestRedditServiceInitialization(unittest.TestCase):
         self.env_patcher.stop()
 
 
-class TestRedditService(unittest.TestCase):
+class TestRedditService(BaseDBTestCase):
 
 
     def setUp(self):
