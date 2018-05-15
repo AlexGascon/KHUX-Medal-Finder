@@ -177,6 +177,8 @@ class TestScrapper(BaseDBTestCase):
         mock_missing_medals.return_value = ['hd invi [ex]', 'axel b', 'illustrated halloween goofy']
 
         with patch.object(MedalFactory, 'medal') as mocked_medalfactory:
+            mocked_medalfactory.return_value = None
+
             with self.requests_mock:
                 self.scrapper.scrape_missing_medals()
 
