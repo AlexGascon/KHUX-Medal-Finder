@@ -1,9 +1,9 @@
 import unittest
 import peewee
-from khux_medal_finder.models import BaseModel, Medal
+from khux_medal_finder.models import BaseModel, Medal, Comment, Reply
 
 test_db = peewee.SqliteDatabase(':memory:')
-MODELS = [BaseModel, Medal]
+MODELS = [BaseModel, Medal, Comment, Reply]
 
 class BaseDBTestCase(unittest.TestCase):
     """TestCase class to use in the test cases where we need to query a DB.
